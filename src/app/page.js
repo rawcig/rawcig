@@ -401,8 +401,8 @@ const ParallaxText = () => {
         — available for projects ✦
       </p>
       <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(3rem, 9vw, 7rem)', fontWeight: 800, lineHeight: 1.0, marginBottom: '1.5rem' }}>
-        Hey, I'm{' '}
-        <span className="grad-text">Your<br />Name</span>
+        Hey, I'm{''}
+        <span className="grad-text">Neang<br/>Sokdara</span>
       </h1>
     </motion.div>
   );
@@ -554,7 +554,7 @@ export default function Home() {
               transition={{ delay: 0.4, duration: 0.8 }}
               style={{ color: '#94a3b8', fontSize: '1.1rem', lineHeight: 1.8, maxWidth: 500, marginBottom: '2.5rem' }}
             >
-              I build beautiful, fast web applications. Student developer exploring the intersection of design and engineering.
+              I love building beautiful, fast web applications. A year 4 student at Setec Institute pursuing a degree in Management Information Systems. Currently open to new opportunities and collaborations.
             </motion.p>
             <motion.div
               initial={{ opacity: 0, y: 20 }}

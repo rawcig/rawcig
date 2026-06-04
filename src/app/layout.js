@@ -12,13 +12,13 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "My Portfolio | Full Stack Developer",
-  description: "Welcome to my portfolio. Explore my projects and learn more about my work as a full stack developer.",
+  title: "rawh",
+  description: "Welcome to my portfolio. Explore my projects and learn more about my work as a student.",
   keywords: "portfolio, developer, next.js, react, web development",
-  authors: [{ name: "Your Name" }],
+  authors: [{ name: "Neang Sokdara" }],
   openGraph: {
-    title: "My Portfolio",
-    description: "Full Stack Developer Portfolio",
+    title: "rawh",
+    description: "Sokdara's Portfolio",
     type: "website",
   },
 };
