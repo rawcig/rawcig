@@ -342,7 +342,7 @@ export const SkillsTicker = ({ skills }) => {
         <motion.div
           style={{ display: 'flex', gap: 12 }}
           animate={{ x: ['0%', '-50%'] }}
-          transition={{ duration: 28, ease: 'linear', repeat: Infinity }}
+          transition={{ duration: 14, ease: 'linear', repeat: Infinity }}
         >
           {doubled.map((skill, i) => <SkillOrb key={i} {...skill} />)}
         </motion.div>
