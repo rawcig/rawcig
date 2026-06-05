@@ -423,9 +423,9 @@ function GlobalStyles() {
 
       /* Contact: 4-col */
       .contact-grid {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: .75rem;
+        display: flex;
+        grid-template-columns: repeat(6, 1fr);
+        gap: 0.75rem;
       }
 
       /* ── Tablet ── */
@@ -895,17 +895,17 @@ function ContactBtn({ label, href, icon, bgColor, iconColor }) {
   return (
     <a href={href} target="_blank" rel="noopener noreferrer" className="contact-btn"
       style={{
-        display: "flex", flexDirection: "column", alignItems: "center", gap: 8,
-        padding: "1.1rem 1rem", borderRadius: "var(--radius-lg)",
+        display: "flex", flexDirection: "column", alignItems: "center", gap: 2,
+        padding: "0.5rem 0.5rem", borderRadius: "var(--radius-lg)",
         background: "var(--surface)", border: "0.5px solid var(--border)",
         textDecoration: "none",
       }}>
       <div style={{
-        width: 44, height: 44, borderRadius: 12,
+        width: 26, height: 26, borderRadius: 10,
         background: bgColor,
         display: "flex", alignItems: "center", justifyContent: "center",
       }}>
-        <i className={icon} style={{ fontSize: 18, color: iconColor }} aria-hidden="true" />
+        <i className={icon} style={{ fontSize: 12, color: iconColor }} aria-hidden="true" />
       </div>
       <span style={{ fontSize: 13, fontWeight: 600, color: "var(--text-2)" }}>{label}</span>
     </a>
@@ -998,11 +998,11 @@ export default function Portfolio() {
         <section id="contact" style={{ marginBottom: "3.5rem" }}>
           <SectionHeader eyebrow="say hello" title="Let's build something great" />
           <div className="contact-grid">
-            <ContactBtn label="Email"    href={`mailto:${rawh.email}`} icon="fa-solid fa-envelope"    bgColor="#EEEDFE" iconColor="#534AB7" />
-            <ContactBtn label="GitHub"   href={rawh.github}           icon="fa-brands fa-github"      bgColor="#F1EFE8" iconColor="#444441" />
-            <ContactBtn label="LinkedIn" href={rawh.linkedin}         icon="fa-brands fa-linkedin"    bgColor="#E6F1FB" iconColor="#185FA5" />
-            <ContactBtn label="Telegram"  href={rawh.telegram}          icon="fa-brands fa-telegram"   bgColor="#F1EFE8" iconColor="#444441" />
-            <ContactBtn label="Facebook"  href={rawh.facebook}           icon="fa-brands fa-facebook"    bgColor="#E6F1FB" iconColor="#1DA1F2" />
+            <ContactBtn href={`mailto:${rawh.email}`} icon="fa-solid fa-envelope"    bgColor="#EEEDFE" iconColor="#534AB7" />
+            <ContactBtn href={rawh.github} icon="fa-brands fa-github"      bgColor="#F1EFE8" iconColor="#444441" />
+            <ContactBtn href={rawh.linkedin} icon="fa-brands fa-linkedin"    bgColor="#E6F1FB" iconColor="#185FA5" />
+            <ContactBtn href={rawh.telegram}          icon="fa-brands fa-telegram"   bgColor="#F1EFE8" iconColor="#444441" />
+            <ContactBtn href={rawh.facebook}           icon="fa-brands fa-facebook"    bgColor="#E6F1FB" iconColor="#1DA1F2" />
           </div>
         </section>
       </main>
