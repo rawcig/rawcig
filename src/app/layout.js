@@ -12,12 +12,12 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "rawh",
+  title: "Rawh | Portfolio",
   description: "Welcome to my portfolio. Explore my projects and learn more about my work as a student.",
   keywords: "portfolio, developer, next.js, react, web development",
   authors: [{ name: "Neang Sokdara" }],
   openGraph: {
-    title: "rawh",
+    title: "Rawh | Portfolio",
     description: "Sokdara's Portfolio",
     type: "website",
   },
