@@ -2,563 +2,1000 @@
 
 import { motion, useInView, useScroll, useTransform, useSpring } from 'framer-motion';
 import { useRef, useState, useEffect } from 'react';
+/**
+ * Portfolio — iOS-style minimal solid card design
+ * Playful & approachable tone
+ *
+ * ─────────────────────────────────────────────
+ *  EDIT YOUR CONTENT HERE ↓
+ * ─────────────────────────────────────────────
+ */
 
-const THEME = {
-  accent1: '#a78bfa',
-  accent2: '#38bdf8',
-  accent3: '#f472b6',
-  glass: 'rgba(255,255,255,0.05)',
-  glassBorder: 'rgba(255,255,255,0.12)',
-  glassHover: 'rgba(255,255,255,0.10)',
+// ── 1. SITE CONFIG ──────────────────────────────────────────────────────────
+const rawh = {
+  name: "Neang Sokdara",
+  tagline: "I build beautiful, fast web apps — where design meets engineering.",
+  availableForWork: true,
+  email: "sokdara.work@gmail.com",
+  github: "https://github.com/rawcig",
+  linkedin: "https://www.linkedin.com/in/sokdara-neang-b69817406/",
+  telegram: "https://telegram.me/rawcig",
+  facebook: "https://www.facebook.com/rawcig",
+  footerYear: 2026,
 };
 
-const GlobalStyles = () => (
-  <style>{`
-    @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:ital,wght@0,300;0,400;1,300&display=swap');
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    :root {
-      --accent1: ${THEME.accent1};
-      --accent2: ${THEME.accent2};
-      --accent3: ${THEME.accent3};
-      --glass: ${THEME.glass};
-      --glass-border: ${THEME.glassBorder};
-      --glass-hover: ${THEME.glassHover};
-      --font-display: 'Syne', sans-serif;
-      --font-body: 'DM Sans', sans-serif;
-    }
-    html { scroll-behavior: smooth; }
-    body { background: #050508; color: #e2e8f0; font-family: var(--font-body); overflow-x: hidden; }
-    .glass { background: var(--glass); border: 1px solid var(--glass-border); backdrop-filter: blur(20px) saturate(180%); -webkit-backdrop-filter: blur(20px) saturate(180%); }
-    .glass:hover { background: var(--glass-hover); border-color: rgba(211,196,255,0.3); }
-    .grad-text { background: linear-gradient(135deg, var(--accent1), var(--accent2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-    ::-webkit-scrollbar { width: 2px; }
-    ::-webkit-scrollbar-track { background: #0a0a0f; }
-    ::-webkit-scrollbar-thumb { background: var(--accent1); border-radius: 2px; }
-    section { padding: 7rem 1.5rem; }
-    [id] { scroll-margin-top: 80px; }
-  `}</style>
-);
-
-const Background = () => (
-  <>
-    <style>{`
-      .bg-orb { position: fixed; border-radius: 50%; filter: blur(120px); opacity: 0.18; pointer-events: none; z-index: 0; animation: drift 18s ease-in-out infinite alternate; }
-      @keyframes drift { 0% { transform: translate(0,0) scale(1); } 50% { transform: translate(40px,-30px) scale(1.1); } 100% { transform: translate(-20px,20px) scale(0.95); } }
-      .grain { position: fixed; inset: 0; z-index: 1; pointer-events: none; opacity: 0.03; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); background-size: 200px; }
-    `}</style>
-    <div className="bg-orb" style={{ width:700, height:700, background:THEME.accent1, top:'-15%', left:'-10%', animationDelay:'0s' }} />
-    <div className="bg-orb" style={{ width:500, height:500, background:THEME.accent2, top:'40%', right:'-5%', animationDelay:'-6s' }} />
-    <div className="bg-orb" style={{ width:400, height:400, background:THEME.accent3, bottom:'10%', left:'30%', animationDelay:'-12s' }} />
-    <div className="grain" />
-  </>
-);
-
-export const ScrollReveal = ({ children, delay=0, direction='up', once=false, className='' }) => {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once, amount:0.25 });
-  const offsets = { up:{y:30}, left:{x:-30}, right:{x:30} };
-  const hidden = { opacity:0, ...offsets[direction] };
-  const visible = { opacity:1, y:0, x:0 };
-  return (
-    <motion.div ref={ref} initial={hidden} animate={isInView ? visible : hidden} transition={{ duration:0.7, delay, ease:[0.22,1,0.36,1] }} className={className}>
-      {children}
-    </motion.div>
-  );
-};
-
-export const GlassCard = ({ children, className='', hover=true, onClick, style={} }) => (
-  <motion.div
-    className={`glass rounded-2xl ${className}`}
-    style={{ position:'relative', overflow:'hidden', ...style }}
-    whileHover={hover ? { y:-6, scale:1.01, borderColor:'rgba(167,139,250,0.4)' } : {}}
-    transition={{ duration:0.1, ease:'easeInOut' }}
-    onClick={onClick}
-  >
-    <div style={{ position:'absolute', inset:0, borderRadius:'inherit', pointerEvents:'none', background:'radial-gradient(circle at 30% 20%, rgba(167,139,250,0.08) 0%, transparent 60%)' }} />
-    {children}
-  </motion.div>
-);
-
-export const Tag = ({ label }) => (
-  <span style={{ padding:'4px 12px', fontSize:'0.7rem', fontFamily:'var(--font-body)', background:'rgba(167,139,250,0.12)', border:'1px solid rgba(167,139,250,0.25)', borderRadius:999, color:'#c4b5fd', letterSpacing:'0.05em', backdropFilter:'blur(8px)' }}>
-    {label}
-  </span>
-);
-
-export const SectionHeader = ({ eyebrow, title, subtitle }) => (
-  <ScrollReveal>
-    <div style={{ marginBottom:'4rem' }}>
-      {eyebrow && <p style={{ fontSize:'0.75rem', letterSpacing:'0.2em', textTransform:'uppercase', color:THEME.accent1, marginBottom:'0.75rem' }}>— {eyebrow}</p>}
-      <h2 className="grad-text" style={{ fontFamily:'var(--font-display)', fontSize:'clamp(2.5rem, 6vw, 4rem)', fontWeight:800, lineHeight:1.1, marginBottom:'1rem' }}>{title}</h2>
-      {subtitle && <p style={{ color:'#94a3b8', maxWidth:480, lineHeight:1.7 }}>{subtitle}</p>}
-    </div>
-  </ScrollReveal>
-);
-
-export const ProjectCard = ({ title, description, tags=[], demo, github, image }) => (
-  <GlassCard style={{ cursor:'default', height:420, display:'flex', flexDirection:'column', padding:0, overflow:'hidden' }}>
-    {image && (
-      <div style={{ height:180, flexShrink:0, overflow:'hidden', margin:'12px 12px 0', borderRadius:10 }}>
-        <motion.img src={image} alt={title} style={{ width:'100%', height:'100%', objectFit:'cover', display:'block' }} whileHover={{ scale:1.05 }} transition={{ duration:0.4 }} />
-      </div>
-    )}
-    <div style={{ flex:1, display:'flex', flexDirection:'column', padding:'1.25rem 1.5rem 1.5rem', gap:'0.5rem', overflow:'hidden' }}>
-      <div style={{ display:'flex', justifyContent:'space-between', alignItems:'flex-start', gap:'0.75rem' }}>
-        <h3 style={{ fontFamily:'var(--font-display)', fontSize:'1.1rem', fontWeight:700, color:'#f1f5f9', lineHeight:1.3 }}>{title}</h3>
-        <div style={{ display:'flex', gap:6, flexShrink:0 }}>
-          {github && <motion.a href={github} target="_blank" rel="noopener noreferrer" style={{ fontSize:'0.72rem', color:'#94a3b8', textDecoration:'none', padding:'5px 10px', border:'1px solid rgba(255,255,255,0.1)', borderRadius:8, whiteSpace:'nowrap' }} whileHover={{ color:'#f1f5f9', borderColor:'rgba(255,255,255,0.3)' }}>GitHub ↗</motion.a>}
-          {demo && <motion.a href={demo} target="_blank" rel="noopener noreferrer" style={{ fontSize:'0.72rem', color:THEME.accent1, textDecoration:'none', padding:'5px 10px', border:`1px solid ${THEME.accent1}40`, borderRadius:8, whiteSpace:'nowrap', background:'rgba(167,139,250,0)' }} whileHover={{ background:'rgba(167,139,250,0.12)' }}>Demo ↗</motion.a>}
-        </div>
-      </div>
-      <p style={{ color:'#94a3b8', fontSize:'0.85rem', lineHeight:1.7, display:'-webkit-box', WebkitLineClamp:3, WebkitBoxOrient:'vertical', overflow:'hidden' }}>{description}</p>
-      <div style={{ marginTop:'auto', paddingTop:'0.5rem', display:'flex', flexWrap:'wrap', gap:6 }}>
-        {tags.map(t => <Tag key={t} label={t} />)}
-      </div>
-    </div>
-  </GlassCard>
-);
-
-export const PictureCard = ({ src, alt, caption, aspectRatio='4/3' }) => (
-  <GlassCard className="overflow-hidden" style={{ padding:0 }}>
-    <div style={{ aspectRatio, overflow:'hidden' }}>
-      <motion.img src={src} alt={alt} style={{ width:'100%', height:'100%', objectFit:'cover', display:'block' }} whileHover={{ scale:1.05 }} transition={{ duration:0.5, ease:'easeOut' }} />
-    </div>
-    {caption && <div style={{ padding:'0.75rem 1rem' }}><p style={{ fontSize:'0.8rem', color:'#64748b' }}>{caption}</p></div>}
-  </GlassCard>
-);
-
-export const BlogCard = ({ title, excerpt, date, readTime, tags=[], href='#', coverImage }) => (
-  <GlassCard className="p-0 overflow-hidden" style={{ cursor:'pointer' }} onClick={() => window.open(href,'_blank')}>
-    {coverImage && <div style={{ height:180, overflow:'hidden' }}><motion.img src={coverImage} alt={title} style={{ width:'100%', height:'100%', objectFit:'cover' }} whileHover={{ scale:1.04 }} transition={{ duration:0.4 }} /></div>}
-    <div style={{ padding:'1.5rem' }}>
-      <div style={{ display:'flex', gap:6, flexWrap:'wrap', marginBottom:'0.75rem' }}>{tags.map(t => <Tag key={t} label={t} />)}</div>
-      <h3 style={{ fontFamily:'var(--font-display)', fontSize:'1.1rem', fontWeight:700, color:'#f1f5f9', marginBottom:'0.5rem', lineHeight:1.4 }}>{title}</h3>
-      <p style={{ color:'#64748b', fontSize:'0.85rem', lineHeight:1.6, marginBottom:'1rem' }}>{excerpt}</p>
-      <div style={{ display:'flex', justifyContent:'space-between', fontSize:'0.75rem', color:'#475569' }}><span>{date}</span><span>{readTime}</span></div>
-    </div>
-  </GlassCard>
-);
-
-const SkillOrb = ({ name, icon }) => (
-  <div className="glass skill-orb" style={{ display:'inline-flex', alignItems:'center', gap:10, padding:'10px 20px', borderRadius:999, whiteSpace:'nowrap', flexShrink:0, cursor:'default' }}>
-    <span style={{ fontSize:'1.2rem' }}>{icon}</span>
-    <span style={{ fontFamily:'var(--font-body)', fontSize:'0.85rem', color:'#cbd5e1' }}>{name}</span>
-  </div>
-);
-
-export const SkillsTicker = ({ skills, direction='left', speed=30 }) => {
-  const items = [...skills,...skills,...skills,...skills];
-  const animName = direction === 'right' ? 'ticker-right' : 'ticker-left';
-  return (
-    <>
-      <style>{`
-        @keyframes ticker-left  { from { transform: translateX(0); } to { transform: translateX(-25%); } }
-        @keyframes ticker-right { from { transform: translateX(-25%); } to { transform: translateX(0); } }
-        .ticker-track { display: flex; gap: 12px; width: max-content; will-change: transform; }
-        .ticker-track:hover { animation-play-state: paused; }
-        .skill-orb { transition: transform 0.2s ease, border-color 0.2s ease; }
-        .skill-orb:hover { transform: scale(1.1) translateY(-4px); border-color: rgba(167,139,250,0.8) !important; }
-      `}</style>
-      <div style={{ position:'relative', width:'100%', overflowX:'clip', overflowY:'visible' }}>
-        <div style={{ position:'absolute', left:0, top:0, bottom:0, width:140, zIndex:2, background:'linear-gradient(to right, #050508, transparent)', pointerEvents:'none' }} />
-        <div style={{ position:'absolute', right:0, top:0, bottom:0, width:140, zIndex:2, background:'linear-gradient(to left, #050508, transparent)', pointerEvents:'none' }} />
-        <div style={{ paddingTop:12, paddingBottom:12 }}>
-          <div className="ticker-track" style={{ animation:`${animName} ${speed}s linear infinite` }}>
-            {items.map((skill,i) => <SkillOrb key={i} {...skill} />)}
-          </div>
-        </div>
-      </div>
-    </>
-  );
-};
-
-export const EducationCard = ({ school, degree, period, description }) => (
-  <GlassCard style={{ padding:'1.5rem 1.75rem' }}>
-    <div style={{ display:'flex', justifyContent:'space-between', alignItems:'flex-start', flexWrap:'wrap', gap:'0.5rem', marginBottom:'0.45rem' }}>
-      <h3 style={{ fontFamily:'var(--font-display)', fontSize:'1.1rem', fontWeight:700, color:'#f1f5f9' }}>{school}</h3>
-      <span style={{ fontSize:'0.75rem', color:'#475569', background:'rgba(255,255,255,0.05)', padding:'3px 10px', borderRadius:999, flexShrink:0 }}>{period}</span>
-    </div>
-    <p style={{ color:THEME.accent1, fontSize:'0.88rem', marginBottom:description ? '0.55rem' : 0 }}>{degree}</p>
-    {description && <p style={{ color:'#64748b', fontSize:'0.82rem', lineHeight:1.7 }}>{description}</p>}
-  </GlassCard>
-);
-
-export const ContactButton = ({ label, href, icon }) => (
-  <motion.a href={href} target="_blank" rel="noopener noreferrer" className="glass"
-    style={{ display:'inline-flex', alignItems:'center', gap:8, padding:'12px 24px', borderRadius:12, color:'#e2e8f0', textDecoration:'none', fontFamily:'var(--font-body)', fontSize:'0.9rem' }}
-    whileHover={{ scale:1.05, borderColor:THEME.accent1, color:THEME.accent1 }} whileTap={{ scale:0.97 }}>
-    {icon && <span style={{ fontSize:'1.1rem' }}>{icon}</span>}
-    {label}
-  </motion.a>
-);
-
-const ParallaxText = () => {
-  const { scrollY } = useScroll();
-  const y = useTransform(scrollY, [0,600], [0,-80]);
-  const springY = useSpring(y, { stiffness:80, damping:20 });
-  return (
-    <motion.div style={{ y:springY }}>
-      <p style={{ fontFamily:'var(--font-body)', fontSize:'0.78rem', letterSpacing:'0.25em', textTransform:'uppercase', color:'#475569', marginBottom:'1.5rem' }}>— available for projects ✦</p>
-      <h1 style={{ fontFamily:'var(--font-display)', fontSize:'clamp(3rem, 9vw, 7rem)', fontWeight:800, lineHeight:1.0, marginBottom:'1.5rem' }}>
-        Hey, I'm{' '}<span className="grad-text">Your<br />Name</span>
-      </h1>
-    </motion.div>
-  );
-};
-
+// ── 2. PROJECTS ──────────────────────────────────────────────────────────────
 const PROJECTS = [
-  { title:'Project Alpha', description:'A cutting-edge web application showcasing modern full-stack development practices with exceptional user experience design.', tags:['Next.js','TypeScript','PostgreSQL'], demo:'#', github:'#', image:'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&q=80' },
-  { title:'Project Beta', description:'Full-stack e-commerce platform with real-time inventory management, payment processing, and analytics.', tags:['React','Node.js','Stripe'], demo:'#', github:'#', image:'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80' },
-  { title:'Project Gamma', description:'Collaborative project management tool with real-time updates and task automation.', tags:['Next.js','WebSocket','Firebase'], demo:'#', github:'#', image:'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80' },
+  {
+    title: "Project Alpha",
+    description:
+      "A full-stack web app with real-time collaboration, role-based auth, and a focus on great UX design patterns.",
+    tags: ["Next.js", "TypeScript", "PostgreSQL"],
+    tagColors: ["purple", "teal", "gray"],
+    github: "#",
+    demo: "#",
+    icon: "fa-solid fa-layer-group",
+    accent: "#7F77DD",
+    accentBg: "#EEEDFE",
+  },
+  {
+    title: "Project Beta",
+    description:
+      "E-commerce platform with real-time inventory management, Stripe payments, and an analytics dashboard.",
+    tags: ["React", "Node.js", "Stripe"],
+    tagColors: ["coral", "teal", "green"],
+    github: "#",
+    demo: "#",
+    icon: "fa-solid fa-cart-shopping",
+    accent: "#1D9E75",
+    accentBg: "#E1F5EE",
+  },
+  {
+    title: "Project Gamma",
+    description:
+      "Collaborative project management tool with real-time updates, kanban boards, and task automation.",
+    tags: ["Next.js", "WebSocket", "Firebase"],
+    tagColors: ["purple", "amber", "coral"],
+    github: "#",
+    demo: "#",
+    icon: "fa-solid fa-diagram-project",
+    accent: "#BA7517",
+    accentBg: "#FAEEDA",
+  },
 ];
 
-const SKILLS = [
-  { name:'JavaScript', icon:'✨' }, { name:'React', icon:'⚛️' }, { name:'Next.js', icon:'▲' },
-  { name:'TypeScript', icon:'🔷' }, { name:'Node.js', icon:'🟢' }, { name:'PostgreSQL', icon:'🗄️' },
-  { name:'MongoDB', icon:'🍃' }, { name:'Tailwind CSS', icon:'🎨' }, { name:'Figma', icon:'🖌️' }, { name:'Docker', icon:'🐳' },
+// ── 3. SKILLS ─────────────────────────────────────────────────────────────────
+// icon: Font Awesome class  |  color: hex for the icon circle bg
+const SKILLS_ROW1 = [
+  { name: "JavaScript", icon: "fa-brands fa-js",           color: "#FAEEDA", iconColor: "#BA7517" },
+  { name: "React",      icon: "fa-brands fa-react",        color: "#E6F1FB", iconColor: "#185FA5" },
+  { name: "Next.js",    icon: "fa-solid fa-n",             color: "#F1EFE8", iconColor: "#5F5E5A" },
+  { name: "TypeScript", icon: "fa-solid fa-code",          color: "#EEEDFE", iconColor: "#534AB7" },
+  { name: "Node.js",    icon: "fa-brands fa-node-js",      color: "#EAF3DE", iconColor: "#3B6D11" },
+  { name: "PostgreSQL", icon: "fa-solid fa-database",      color: "#E1F5EE", iconColor: "#0F6E56" },
+  { name: "MongoDB",    icon: "fa-solid fa-leaf",          color: "#EAF3DE", iconColor: "#3B6D11" },
+  { name: "Docker",     icon: "fa-brands fa-docker",       color: "#E6F1FB", iconColor: "#185FA5" },
 ];
 
-const PICTURES = [
-  { src:'https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=600&q=80', alt:'coding setup', caption:'My workspace' },
-  { src:'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=600&q=80', alt:'laptop code', caption:'Late night sessions' },
-  { src:'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=600&q=80', alt:'macbook code', caption:'Building things' },
+const SKILLS_ROW2 = [
+  { name: "Figma",      icon: "fa-brands fa-figma",        color: "#FBEAF0", iconColor: "#993556" },
+  { name: "Git",        icon: "fa-brands fa-git-alt",      color: "#FAECE7", iconColor: "#993C1D" },
+  { name: "AWS",        icon: "fa-brands fa-aws",          color: "#FAEEDA", iconColor: "#854F0B" },
+  { name: "Tailwind",   icon: "fa-solid fa-wind",          color: "#E6F1FB", iconColor: "#185FA5" },
+  { name: "GraphQL",    icon: "fa-solid fa-circle-nodes",  color: "#FBEAF0", iconColor: "#993556" },
+  { name: "Python",     icon: "fa-brands fa-python",       color: "#EEEDFE", iconColor: "#534AB7" },
+  { name: "Linux",      icon: "fa-brands fa-linux",        color: "#F1EFE8", iconColor: "#444441" },
+  { name: "Vercel",     icon: "fa-solid fa-rocket",        color: "#F1EFE8", iconColor: "#444441" },
 ];
 
-const BLOGS = [
-  { title:'Why I switched from CRA to Next.js and never looked back', excerpt:'A deep dive into the performance gains, DX improvements, and the few gotchas I hit along the way.', date:'May 2025', readTime:'5 min read', tags:['Next.js','React'], coverImage:'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=600&q=80' },
-  { title:'Liquid Glass UI: building the effect from scratch', excerpt:'How to use backdrop-filter, CSS variables, and layered gradients to create a truly glass-like interface.', date:'Apr 2025', readTime:'8 min read', tags:['CSS','Design'], coverImage:'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80' },
-  { title:'TypeScript patterns I use every single day', excerpt:'Utility types, discriminated unions, and template literal types — the patterns that actually matter.', date:'Mar 2025', readTime:'6 min read', tags:['TypeScript'], coverImage:'https://images.unsplash.com/photo-1542831371-29b0f74f9713?w=600&q=80' },
+// ── 4. PHOTOS ─────────────────────────────────────────────────────────────────
+const PHOTOS = [
+  { src: "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=600&q=80", alt: "My workspace", caption: "The setup" },
+  { src: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=600&q=80", alt: "Late night sessions", caption: "3am energy" },
+  { src: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=600&q=80", alt: "Building things", caption: "Building things" },
+  { src: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=600&q=80", alt: "Code close up", caption: "In the zone" },
 ];
 
+// ── 5. BLOG POSTS ─────────────────────────────────────────────────────────────
+const BLOG_POSTS = [
+  {
+    title: "Why I switched from CRA to Next.js and never looked back",
+    excerpt: "Performance gains, DX improvements, and the gotchas I hit along the way.",
+    date: "May 2025",
+    readTime: "5 min",
+    tags: ["Next.js", "React"],
+    tagColors: ["purple", "coral"],
+    href: "#",
+  },
+  {
+    title: "Liquid Glass UI: building the effect from scratch",
+    excerpt: "backdrop-filter, CSS variables, and layered gradients to create a truly glass-like interface.",
+    date: "Apr 2025",
+    readTime: "8 min",
+    tags: ["CSS", "Design"],
+    tagColors: ["teal", "pink"],
+    href: "#",
+  },
+  {
+    title: "TypeScript patterns I use every single day",
+    excerpt: "Utility types, discriminated unions, and template literal types — the ones that actually matter.",
+    date: "Mar 2025",
+    readTime: "6 min",
+    tags: ["TypeScript"],
+    tagColors: ["purple"],
+    href: "#",
+  },
+];
+
+// ── 6. EDUCATION ──────────────────────────────────────────────────────────────
 const EDUCATION = [
-  { school:'Your University', degree:'BSc Computer Science', period:'2020 – 2024', description:'Focus on distributed systems and human-computer interaction.' },
-  { school:'Coding Bootcamp', degree:'Full Stack Web Development', period:'2023', description:'Intensive 12-week program covering modern web stack.' },
+  {
+    school: "Your University",
+    degree: "BSc Computer Science",
+    period: "2020 – 2024",
+    description: "Focus on distributed systems and human-computer interaction.",
+  },
+  {
+    school: "Coding Bootcamp",
+    degree: "Full Stack Web Development",
+    period: "2023",
+    description: "Intensive 12-week program covering the modern web stack.",
+  },
 ];
 
-// ============================================================
-// NAVIGATION — iOS dark mode solid dock, SVG icons
-// ============================================================
-
-// SF-style SVG icons: each returns a 20×20 SVG
-const Icons = {
-  projects: (
-    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <rect x="2" y="2" width="7" height="7" rx="1.5" fill="currentColor"/>
-      <rect x="11" y="2" width="7" height="7" rx="1.5" fill="currentColor"/>
-      <rect x="2" y="11" width="7" height="7" rx="1.5" fill="currentColor"/>
-      <rect x="11" y="11" width="7" height="7" rx="1.5" fill="currentColor"/>
-    </svg>
-  ),
-  skills: (
-    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M10 2L12.39 7.26L18 8.09L14 12L14.95 17.59L10 15.05L5.05 17.59L6 12L2 8.09L7.61 7.26L10 2Z" fill="currentColor"/>
-    </svg>
-  ),
-  photos: (
-    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <rect x="2" y="4" width="16" height="12" rx="2" fill="currentColor" opacity="0.9"/>
-      <circle cx="10" cy="10" r="3" fill="#1c1c1e"/>
-      <circle cx="10" cy="10" r="1.5" fill="currentColor"/>
-      <circle cx="15.5" cy="5.5" r="1" fill="#1c1c1e"/>
-    </svg>
-  ),
-  blog: (
-    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M4 4h12a1 1 0 011 1v10a1 1 0 01-1 1H4a1 1 0 01-1-1V5a1 1 0 011-1z" fill="currentColor" opacity="0.9"/>
-      <path d="M6 7.5h8M6 10h8M6 12.5h5" stroke="#1c1c1e" strokeWidth="1.3" strokeLinecap="round"/>
-    </svg>
-  ),
-  contact: (
-    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M3 5.5A1.5 1.5 0 014.5 4h11A1.5 1.5 0 0117 5.5v9a1.5 1.5 0 01-1.5 1.5h-11A1.5 1.5 0 013 14.5v-9z" fill="currentColor" opacity="0.9"/>
-      <path d="M3.5 5.5L10 11l6.5-5.5" stroke="#1c1c1e" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/>
-    </svg>
-  ),
+// ─────────────────────────────────────────────
+//  THEME — edit colors here
+// ─────────────────────────────────────────────
+const CHIP_COLORS = {
+  purple: { bg: "#EEEDFE", color: "#3C3489", border: "#AFA9EC" },
+  teal:   { bg: "#E1F5EE", color: "#085041", border: "#5DCAA5" },
+  coral:  { bg: "#FAECE7", color: "#712B13", border: "#F0997B" },
+  pink:   { bg: "#FBEAF0", color: "#72243E", border: "#ED93B1" },
+  amber:  { bg: "#FAEEDA", color: "#633806", border: "#EF9F27" },
+  green:  { bg: "#EAF3DE", color: "#27500A", border: "#97C459" },
+  gray:   { bg: "#F1EFE8", color: "#444441", border: "#B4B2A9" },
 };
 
+// ─────────────────────────────────────────────
+//  DO NOT EDIT BELOW — Components & Layout
+// ─────────────────────────────────────────────
+
+// import { useState, useEffect, useRef } from "react";
+
+/* ── Font Awesome + Google Fonts loader ── */
+function FontLoader() {
+  useEffect(() => {
+    const links = [
+      { rel: "preconnect", href: "https://fonts.googleapis.com" },
+      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
+      {
+        rel: "stylesheet",
+        href: "https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap",
+      },
+      {
+        rel: "stylesheet",
+        href: "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css",
+      },
+    ];
+    links.forEach((attrs) => {
+      if (document.querySelector(`link[href="${attrs.href}"]`)) return;
+      const el = document.createElement("link");
+      Object.entries(attrs).forEach(([k, v]) => (el[k] = v));
+      document.head.appendChild(el);
+    });
+  }, []);
+  return null;
+}
+
+/* ── Global Styles ── */
+function GlobalStyles() {
+  return (
+    <style>{`
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+      :root {
+        --bg:       #F5F5F7;
+        --surface:  #FFFFFF;
+        --border:   rgba(0,0,0,0.08);
+        --border-md:rgba(0,0,0,0.13);
+        --text:     #1C1C1E;
+        --text-2:   #3C3C43;
+        --text-3:   #8A8A8E;
+        --accent:   #7F77DD;
+        --accent-bg:#EEEDFE;
+        --radius-sm:  8px;
+        --radius-md:  12px;
+        --radius-lg:  18px;
+        --radius-xl:  24px;
+        --font: 'Plus Jakarta Sans', -apple-system, sans-serif;
+      }
+
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg:       #1C1C1E;
+          --surface:  #2C2C2E;
+          --border:   rgba(255,255,255,0.09);
+          --border-md:rgba(255,255,255,0.15);
+          --text:     #F2F2F7;
+          --text-2:   #AEAEB2;
+          --text-3:   #636366;
+          --accent-bg:#2D2956;
+        }
+      }
+
+      html { scroll-behavior: smooth; }
+
+      body {
+        background: var(--bg);
+        color: var(--text);
+        font-family: var(--font);
+        -webkit-font-smoothing: antialiased;
+        overflow-x: hidden;
+      }
+
+      /* scrollbar */
+      ::-webkit-scrollbar { width: 3px; }
+      ::-webkit-scrollbar-track { background: transparent; }
+      ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 3px; }
+
+      [id] { scroll-margin-top: 88px; }
+
+      /* ── Hero entrance keyframes ── */
+      @keyframes hero-up {
+        from { opacity: 0; transform: translateY(22px); }
+        to   { opacity: 1; transform: translateY(0); }
+      }
+      @keyframes hero-pop {
+        0%   { opacity: 0; transform: scale(0.82); }
+        60%  { transform: scale(1.06); }
+        100% { opacity: 1; transform: scale(1); }
+      }
+      @keyframes hero-fade {
+        from { opacity: 0; }
+        to   { opacity: 1; }
+      }
+
+      /* Staggered delay classes — each hero child uses one */
+      .h-card    { animation: hero-fade 0.4s ease 0s both; }
+      .h-avatar  { animation: hero-pop  0.55s cubic-bezier(.34,1.4,.64,1) 0.08s both; }
+      .h-badge   { animation: hero-up   0.5s  cubic-bezier(.22,1,.36,1)   0.2s  both; }
+      .h-name    { animation: hero-up   0.6s  cubic-bezier(.22,1,.36,1)   0.3s  both; }
+      .h-tagline { animation: hero-up   0.6s  cubic-bezier(.22,1,.36,1)   0.42s both; }
+      .h-btns    { animation: hero-up   0.6s  cubic-bezier(.22,1,.36,1)   0.54s both; }
+
+      /* reveal animation */
+      .reveal {
+        opacity: 0;
+        transform: translateY(20px);
+        transition: opacity 0.55s cubic-bezier(.22,1,.36,1), transform 0.55s cubic-bezier(.22,1,.36,1);
+      }
+      .reveal.visible { opacity: 1; transform: none; }
+
+      /* project card hover */
+      .proj-card { transition: transform .18s ease, box-shadow .18s ease; }
+      .proj-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0,0,0,.08); }
+
+      /* blog card hover */
+      .blog-card { transition: transform .18s ease; cursor: pointer; }
+      .blog-card:hover { transform: translateY(-3px); }
+
+      /* contact btn hover */
+      .contact-btn { transition: transform .15s ease, border-color .15s ease; }
+      .contact-btn:hover { transform: translateY(-2px); border-color: var(--accent) !important; }
+
+      /* skill pill hover */
+      .skill-pill-item { transition: transform .15s ease; cursor: pointer; borderRadius:999px; }
+      .skill-pill-item:hover { transform: scale(1.06) translateY(-2px); }
+
+      /* ticker */
+      @keyframes ticker-left  { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+      @keyframes ticker-right { from { transform: translateX(-50%); } to { transform: translateX(0); } }
+      .ticker-track { display: flex; width: max-content; will-change: transform; }
+      .ticker-track:hover { animation-play-state: paused !important; }
+
+      /* dock — pill expand */
+      .dock-btn {
+        overflow: hidden;
+        width: 38px;
+        transition: width .32s cubic-bezier(.34,1.15,.64,1), background .15s ease, color .15s ease;
+      }
+      .dock-btn:hover, .dock-btn.dock-active {
+        width: auto;
+      }
+      .dock-btn .dock-label {
+        overflow: hidden;
+        white-space: nowrap;
+        max-width: 0;
+        opacity: 0;
+        transition: max-width .28s cubic-bezier(.34,1.15,.64,1), opacity .14s ease .1s;
+      }
+      .dock-btn:hover .dock-label, .dock-btn.dock-active .dock-label {
+        max-width: 60px;
+        opacity: 1;
+      }
+
+      /* photo grid */
+      .photo-card-wrap { cursor: zoom-in; }
+      .photo-img { transition: transform .45s ease; }
+      .photo-img:hover { transform: scale(1.04); }
+
+      /* lightbox */
+      @keyframes lb-in  { from { opacity: 0; } to { opacity: 1; } }
+      @keyframes lb-img { from { opacity: 0; transform: scale(.94); } to { opacity: 1; transform: scale(1); } }
+      .lb-overlay {
+        position: fixed; inset: 0; z-index: 1000;
+        background: rgba(0,0,0,.88);
+        display: flex; align-items: center; justify-content: center;
+        animation: lb-in .18s ease both;
+      }
+      .lb-img-wrap {
+        position: relative; max-width: 92vw; max-height: 86vh;
+        animation: lb-img .22s cubic-bezier(.22,1,.36,1) both;
+      }
+      .lb-img-wrap img {
+        display: block; max-width: 92vw; max-height: 80vh;
+        width: auto; height: auto;
+        border-radius: 12px; object-fit: contain;
+      }
+      .lb-btn {
+        position: fixed; top: 50%; transform: translateY(-50%);
+        width: 48px; height: 48px; border-radius: 50%;
+        background: rgba(255,255,255,.12); border: 0.5px solid rgba(255,255,255,.2);
+        color: #fff; font-size: 18px;
+        display: flex; align-items: center; justify-content: center;
+        cursor: pointer; transition: background .15s ease;
+        backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+      }
+      .lb-btn:hover { background: rgba(255,255,255,.22); }
+      .lb-btn.prev { left: 20px; }
+      .lb-btn.next { right: 20px; }
+      .lb-close {
+        position: fixed; top: 20px; right: 20px;
+        width: 40px; height: 40px; border-radius: 50%;
+        background: rgba(255,255,255,.12); border: 0.5px solid rgba(255,255,255,.2);
+        color: #fff; font-size: 16px;
+        display: flex; align-items: center; justify-content: center;
+        cursor: pointer; transition: background .15s ease;
+        backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+      }
+      .lb-close:hover { background: rgba(255,255,255,.22); }
+      .lb-caption {
+        position: absolute; bottom: -32px; left: 0; right: 0;
+        text-align: center; font-size: 13px; font-weight: 500; color: rgba(255,255,255,.6);
+      }
+      .lb-counter {
+        position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+        font-size: 12px; font-weight: 600; color: rgba(255,255,255,.5);
+        letter-spacing: .06em;
+      }
+      @media (max-width: 480px) {
+        .lb-btn { width: 40px; height: 40px; font-size: 15px; }
+        .lb-btn.prev { left: 10px; }
+        .lb-btn.next { right: 10px; }
+      }
+
+      /* RESPONSIVE LAYOUT */
+
+      .page-wrap {
+        max-width: 860px;
+        margin: 0 auto;
+        padding: 0 1.25rem 6rem;
+      }
+
+      /* Projects: default 2-col grid */
+      .projects-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: .75rem;
+      }
+
+      /* Photos: default 4-col */
+      .photos-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: .75rem;
+      }
+
+      /* Blog: default 3-col */
+      .blog-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: .75rem;
+      }
+
+      /* Education: 2-col */
+      .edu-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: .75rem;
+      }
+
+      /* Contact: 4-col */
+      .contact-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: .75rem;
+      }
+
+      /* ── Tablet ── */
+      @media (max-width: 700px) {
+        .projects-grid { grid-template-columns: 1fr; }
+        .blog-grid     { grid-template-columns: repeat(2, 1fr); }
+        .photos-grid   { grid-template-columns: repeat(2, 1fr); }
+        .edu-grid      { grid-template-columns: 1fr; }
+        .contact-grid  { grid-template-columns: repeat(2, 1fr); }
+        .hero-section  { flex-direction: column; text-align: center; }
+        .hero-btns     { justify-content: center !important; }
+      }
+
+      /* ── Phone ── */
+      @media (max-width: 480px) {
+        .page-wrap { padding: 0 .875rem 5rem; }
+        .projects-grid { grid-template-columns: 1fr; }
+        .photos-grid   { grid-template-columns: repeat(2, 1fr); }
+        .blog-grid     { grid-template-columns: 1fr; }
+        .contact-grid  { grid-template-columns: repeat(2, 1fr); }
+        .section-title { font-size: 22px !important; }
+        .hero-name     { font-size: 30px !important; }
+
+        /* Project on mobile: row layout */
+        .proj-card-inner { flex-direction: row !important; align-items: flex-start !important; }
+        .proj-icon-wrap  { flex-shrink: 0; }
+        .proj-body       { flex: 1; min-width: 0; }
+
+        /* Dock on mobile: shrink padding */
+        .dock-pill       { gap: 2px; padding: 5px 8px; }
+        .dock-btn        { padding-left: 9px !important; }
+      }
+    `}</style>
+  );
+}
+
+/* ── Reveal on scroll hook ── */
+function useReveal() {
+  const ref = useRef(null);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) { el.classList.add("visible"); obs.disconnect(); } },
+      { threshold: 0.15 }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
+  return ref;
+}
+
+/* ── Chip ── */
+function Chip({ label, colorKey = "gray" }) {
+  const c = CHIP_COLORS[colorKey] || CHIP_COLORS.gray;
+  return (
+    <span style={{
+      display: "inline-flex", alignItems: "center",
+      fontSize: 11, fontWeight: 600, letterSpacing: ".02em",
+      padding: "3px 10px", borderRadius: 999,
+      background: c.bg, color: c.color, border: `0.5px solid ${c.border}`,
+      margin: "0 4px 4px 0",
+    }}>{label}</span>
+  );
+}
+
+/* ── Section Header ── */
+function SectionHeader({ eyebrow, title }) {
+  const ref = useReveal();
+  return (
+    <div ref={ref} className="reveal" style={{ marginBottom: "1.5rem" }}>
+      <p style={{ fontSize: 11, fontWeight: 600, letterSpacing: ".14em", textTransform: "uppercase", color: "var(--text-3)", marginBottom: 6 }}>
+        — {eyebrow}
+      </p>
+      <h2 className="section-title" style={{ fontSize: 28, fontWeight: 700, color: "var(--text)" }}>{title}</h2>
+    </div>
+  );
+}
+
+/* ── Card wrapper ── */
+function Card({ children, style = {}, className = "", onClick }) {
+  return (
+    <div
+      onClick={onClick}
+      className={className}
+      style={{
+        background: "var(--surface)",
+        border: "0.5px solid var(--border)",
+        borderRadius: "var(--radius-lg)",
+        ...style,
+      }}
+    >
+      {children}
+    </div>
+  );
+}
+
+/* ── Nav ── */
 const NAV_ITEMS = [
-  { id:'projects', label:'Projects' },
-  { id:'skills',   label:'Skills'   },
-  { id:'photos',   label:'Photos'   },
-  { id:'blog',     label:'Blog'     },
-  { id:'contact',  label:'Contact'  },
+  { id: "projects", label: "Projects", icon: "fa-brands fa-jira" },
+  { id: "skills",   label: "Skills",   icon: "fa-solid fa-star" },
+  { id: "photos",   label: "Photos",   icon: "fa-solid fa-camera" },
+  { id: "blog",     label: "Blog",     icon: "fa-solid fa-pen-nib" },
+  { id: "contact",  label: "Contact",  icon: "fa-solid fa-envelope" },
 ];
 
-const Nav = () => {
-  const [active, setActive] = useState('');
-  const [hovered, setHovered] = useState(null);
-
+function Nav() {
+  const [active, setActive] = useState("");
   useEffect(() => {
-    const sections = NAV_ITEMS.map(n => document.getElementById(n.id)).filter(Boolean);
-    const observer = new IntersectionObserver(
-      entries => { entries.forEach(e => { if (e.isIntersecting) setActive(e.target.id); }); },
-      { threshold: 0.4 }
+    const sections = NAV_ITEMS.map((n) => document.getElementById(n.id)).filter(Boolean);
+    const obs = new IntersectionObserver(
+      (entries) => entries.forEach((e) => { if (e.isIntersecting) setActive(e.target.id); }),
+      { rootMargin: "-40% 0px -40% 0px", threshold: 0 }
     );
-    sections.forEach(s => observer.observe(s));
-    return () => observer.disconnect();
+    sections.forEach((s) => obs.observe(s));
+    return () => obs.disconnect();
   }, []);
 
   return (
-    <>
-      <style>{`
-        /* Outer bar — iOS tab bar feel: solid dark, no blur */
-        .dock-pill {
-          position: fixed;
-          bottom: 28px;
-          left: 50%;
-          transform: translateX(-50%);
-          z-index: 100;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          gap: 5px;
-          padding: 6px 8px;
-          border-radius: 999px;
-          background: #1c1c1e;
-          border: 1px solid #3a3a3c;
-          box-shadow: 0 4px 24px rgba(0,0,0,0.7);
-        }
-
-        /* Each pill button */
-        .dock-item {
-          position: relative;
-          display: flex;
-          align-items: center;
-          justify-content: flex-start;
-          gap: 0px;
-          width: 40px;
-          height: 40px;
-          border-radius: 999px;
-          cursor: pointer;
-          text-decoration: none;
-          background: #2c2c2e;
-          border: none;
-          overflow: hidden;
-          padding: 0;
-          transition:
-            width 0.38s cubic-bezier(0.34,1.15,0.64,1),
-            background 0.18s ease;
-        }
-
-        .dock-item:hover {
-          width: 116px;
-          background: #3a3a3c;
-        }
-
-        /* Active: solid accent fill */
-        .dock-item.is-active {
-          background: #a78bfa;
-        }
-
-        .dock-item.is-active:hover {
-          background: #b8a4fb;
-        }
-
-        /* Icon wrapper — always 40×40, perfectly centered */
-        .dock-icon-wrap {
-          width: 40px;
-          height: 40px;
-          flex-shrink: 0;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-        }
-
-        .dock-icon-wrap svg {
-          color: #8e8e93;
-          transition: color 0.18s ease, transform 0.22s cubic-bezier(0.34,1.4,0.64,1);
-        }
-
-        .dock-item:hover .dock-icon-wrap svg {
-          color: #ffffff;
-          transform: scale(1.1);
-        }
-
-        /* Active state: white icon */
-        .dock-item.is-active .dock-icon-wrap svg {
-          color: #ffffff;
-        }
-
-        /* Label */
-        .dock-label {
-          font-family: var(--font-body);
-          font-size: 0.72rem;
-          font-weight: 600;
-          letter-spacing: 0.01em;
-          color: #ffffff;
-          white-space: nowrap;
-          overflow: hidden;
-          max-width: 0;
-          opacity: 0;
-          padding-right: 0;
-          transition:
-            max-width 0.38s cubic-bezier(0.34,1.15,0.64,1),
-            opacity   0.16s ease 0.1s,
-            padding-right 0.38s ease;
-        }
-
-        .dock-item:hover .dock-label {
-          max-width: 76px;
-          opacity: 1;
-          padding-right: 14px;
-        }
-
-        /* Active dot below */
-        .dock-dot {
-          position: absolute;
-          bottom: -8px;
-          left: 50%;
-          transform: translateX(-50%);
-          width: 4px;
-          height: 4px;
-          border-radius: 50%;
-          background: #a78bfa;
-        }
-      `}</style>
-
-      <motion.div
-        className="dock-pill"
-        initial={{ y: 80, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.7, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-      >
-        {NAV_ITEMS.map(({ id, label }) => (
+    <nav
+      className="dock-pill"
+      aria-label="Section navigation"
+      style={{
+        position: "fixed", bottom: 22, left: "50%", transform: "translateX(-50%)",
+        zIndex: 100, display: "flex", alignItems: "center",
+        background: "var(--surface)", border: "0.5px solid var(--border-md)",
+        borderRadius: 999, padding: "6px 8px", gap: 4,
+        boxShadow: "0 4px 28px rgba(0,0,0,.14)",
+      }}
+    >
+      {NAV_ITEMS.map(({ id, label, icon }) => {
+        return (
           <a
             key={id}
             href={`#${id}`}
-            className={`dock-item${active === id ? ' is-active' : ''}`}
+            className={`dock-btn${active === id ? " dock-active" : ""}`}
             aria-label={label}
-            onMouseEnter={() => setHovered(id)}
-            onMouseLeave={() => setHovered(null)}
+            style={{
+              display: "flex", alignItems: "center", gap: 6,
+              padding: "9px 0 9px 11px", borderRadius: 999,
+              fontSize: 12, fontWeight: 600, fontFamily: "var(--font)",
+              textDecoration: "none",
+              background: active === id ? "var(--accent-bg)" : "transparent",
+              color: active === id ? "var(--accent)" : "var(--text-3)",
+              border: "none", flexShrink: 0,
+            }}
           >
-            <div className="dock-icon-wrap">
-              {Icons[id]}
-            </div>
-            <span className="dock-label">{label}</span>
-            {active === id && <span className="dock-dot" />}
+              
+            <i className={icon} style={{ fontSize: 15, flexShrink: 0 }} aria-hidden="true" />
+            <span className="dock-label" style={{ paddingRight: 12, borderRadius: 999 }}>{label}</span>
           </a>
-        ))}
-      </motion.div>
-    </>
+        );
+      })}
+    </nav>
   );
-};
+}
 
-// ============================================================
-// PAGE
-// ============================================================
-export default function Home() {
+/* ── Hero ── */
+function Hero() {
+  return (
+    <section style={{ padding: "5rem 0 3rem" }}>
+      <Card className="h-card" style={{ padding: "2.5rem", overflow: "hidden", position: "relative" }}>
+        {/* decorative blobs */}
+        <div style={{ position: "absolute", top: -60, right: -60, width: 220, height: 220, borderRadius: "50%", background: "#EEEDFE", opacity: .6, pointerEvents: "none" }} />
+        <div style={{ position: "absolute", bottom: -40, left: -40, width: 150, height: 150, borderRadius: "50%", background: "#E1F5EE", opacity: .5, pointerEvents: "none" }} />
+
+        <div className="hero-section" style={{ display: "flex", alignItems: "center", gap: "2.5rem", position: "relative", zIndex: 1 }}>
+          {/* avatar */}
+          <div className="h-avatar" style={{ flexShrink: 0 }}>
+            <div style={{
+              width: 88, height: 88, borderRadius: "50%",
+              background: "linear-gradient(135deg, #EEEDFE 0%, #E1F5EE 100%)",
+              display: "flex", alignItems: "center", justifyContent: "center",
+              border: "3px solid var(--surface)",
+              boxShadow: "0 0 0 1px var(--border-md)",
+            }}>
+              <i className="fa-solid fa-laptop-code" style={{ fontSize: 32, color: "var(--accent)" }} aria-hidden="true" />
+            </div>
+          </div>
+
+          {/* text */}
+          <div style={{ flex: 1, minWidth: 0 }}>
+            {rawh.availableForWork && (
+              <div className="h-badge" style={{
+                display: "inline-flex", alignItems: "center", gap: 7,
+                fontSize: 12, fontWeight: 600, padding: "4px 12px",
+                borderRadius: 999, background: "#E1F5EE", color: "#085041",
+                border: "0.5px solid #5DCAA5", marginBottom: 14,
+              }}>
+                <span style={{ width: 7, height: 7, borderRadius: "50%", background: "#1D9E75", flexShrink: 0 }} />
+                Open to work
+              </div>
+            )}
+
+            <h1 className="hero-name h-name" style={{ fontSize: 38, fontWeight: 700, lineHeight: 1.15, marginBottom: 10 }}>
+              Hey, I'm{" "}
+              <span style={{ color: "var(--accent)" }}>{rawh.name}</span> 
+            </h1>
+
+            <p className="h-tagline" style={{ fontSize: 16, color: "var(--text-2)", lineHeight: 1.7, maxWidth: 420, marginBottom: 22 }}>
+              {rawh.tagline}
+            </p>
+
+            <div className="hero-btns h-btns" style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+              <a href="#projects"
+                style={{
+                  display: "inline-flex", alignItems: "center", gap: 8,
+                  padding: "10px 22px", borderRadius: 12,
+                  background: "var(--accent)", color: "#fff",
+                  fontSize: 14, fontWeight: 600, textDecoration: "none", border: "none",
+                }}>
+                <i className="fa-solid fa-eye" aria-hidden="true" />
+                View my work
+              </a>
+              <a href="#contact"
+                style={{
+                  display: "inline-flex", alignItems: "center", gap: 8,
+                  padding: "10px 22px", borderRadius: 12,
+                  background: "transparent", color: "var(--text)",
+                  fontSize: 14, fontWeight: 600, textDecoration: "none",
+                  border: "0.5px solid var(--border-md)",
+                }}>
+                <i className="fa-solid fa-paper-plane" aria-hidden="true" />
+                Get in touch
+              </a>
+            </div>
+          </div>
+        </div>
+      </Card>
+    </section>
+  );
+}
+
+/* ── Project Card ── */
+function ProjectCard({ project, delay }) {
+  const ref = useReveal();
+  return (
+    <div ref={ref} className="reveal" style={{ transitionDelay: `${delay}ms` }}>
+      <Card className="proj-card" style={{ padding: "1.25rem", height: 260, display: "flex", flexDirection: "column" }}>
+        {/* proj-card-inner becomes row on mobile via CSS */}
+        <div className="proj-card-inner" style={{ display: "flex", flexDirection: "column", gap: 12, flex: 1, minHeight: 0 }}>
+          <div className="proj-icon-wrap" style={{
+            width: 44, height: 44, borderRadius: 12,
+            background: project.accentBg,
+            display: "flex", alignItems: "center", justifyContent: "center",
+            flexShrink: 0,
+          }}>
+            <i className={project.icon} style={{ fontSize: 20, color: project.accent }} aria-hidden="true" />
+          </div>
+
+          <div className="proj-body" style={{ display: "flex", flexDirection: "column", gap: 8, flex: 1, minHeight: 0 }}>
+            <h3 style={{ fontSize: 16, fontWeight: 700, color: "var(--text)" }}>{project.title}</h3>
+            <p style={{ fontSize: 13, color: "var(--text-2)", lineHeight: 1.65, flex: 1, overflow: "hidden", display: "-webkit-box", WebkitLineClamp: 3, WebkitBoxOrient: "vertical" }}>{project.description}</p>
+
+            <div style={{ display: "flex", flexWrap: "wrap" }}>
+              {project.tags.map((t, i) => <Chip key={t} label={t} colorKey={project.tagColors[i] || "gray"} />)}
+            </div>
+
+            <div style={{ display: "flex", gap: 6, marginTop: 2 }}>
+              {project.github && (
+                <a href={project.github} target="_blank" rel="noopener noreferrer"
+                  style={{
+                    display: "inline-flex", alignItems: "center", gap: 5,
+                    fontSize: 12, fontWeight: 600, padding: "5px 12px",
+                    borderRadius: 8, border: "0.5px solid var(--border-md)",
+                    color: "var(--text-2)", textDecoration: "none", background: "transparent",
+                  }}>
+                  <i className="fa-brands fa-github" style={{ fontSize: 13 }} aria-hidden="true" />
+                  GitHub
+                </a>
+              )}
+              {project.demo && (
+                <a href={project.demo} target="_blank" rel="noopener noreferrer"
+                  style={{
+                    display: "inline-flex", alignItems: "center", gap: 5,
+                    fontSize: 12, fontWeight: 600, padding: "5px 12px",
+                    borderRadius: 8, border: `0.5px solid ${project.accentBg}`,
+                    color: project.accent, textDecoration: "none",
+                    background: project.accentBg,
+                  }}>
+                  <i className="fa-solid fa-arrow-up-right-from-square" style={{ fontSize: 12 }} aria-hidden="true" />
+                  Live demo
+                </a>
+              )}
+            </div>
+          </div>
+        </div>
+      </Card>
+    </div>
+  );
+}
+
+/* ── Skills Ticker ── */
+function SkillPill({ skill }) {
+  return (
+    <div className="skill-pill-item" style={{
+      display: "inline-flex", alignItems: "center", gap: 8,
+      padding: "8px 16px 8px 10px",
+      borderRadius: 999,
+      background: "var(--surface)",
+      border: "0.5px solid var(--border)",
+      marginRight: 10, flexShrink: 0,
+    }}>
+      <span style={{
+        width: 28, height: 28, borderRadius: 8,
+        background: skill.color,
+        display: "flex", alignItems: "center", justifyContent: "center",
+        flexShrink: 0, borderRadius: 999,
+      }}>
+        <i className={skill.icon} style={{ fontSize: 14, color: skill.iconColor }} aria-hidden="true" />
+      </span>
+      <span style={{ fontSize: 13, fontWeight: 600, color: "var(--text)", whiteSpace: "nowrap" }}>{skill.name}</span>
+    </div>
+  );
+}
+
+function SkillsTicker({ skills, direction = "left", speed = 28 }) {
+  // quadruple for seamless loop
+  const items = [...skills, ...skills, ...skills, ...skills];
+  const animName = direction === "right" ? "ticker-right" : "ticker-left";
+  return (
+    <div style={{ position: "relative", width: "100%", overflow: "hidden", padding: "8px 0" }}>
+      {/* fade edges */}
+      <div style={{ position: "absolute", left: 0, top: 0, bottom: 0, width: 80, zIndex: 2, background: "linear-gradient(to right, var(--bg), transparent)", pointerEvents: "none" }} />
+      <div style={{ position: "absolute", right: 0, top: 0, bottom: 0, width: 80, zIndex: 2, background: "linear-gradient(to left, var(--bg), transparent)", pointerEvents: "none" }} />
+      <div
+        className="ticker-track"
+        style={{ animation: `${animName} ${speed}s linear infinite` }}
+      >
+        {items.map((s, i) => <SkillPill key={i} skill={s} />)}
+      </div>
+    </div>
+  );
+}
+
+/* ── Photo Card ── */
+function PhotoCard({ photo, index, onOpen, delay }) {
+  const ref = useReveal();
+  return (
+    <div ref={ref} className="reveal photo-card-wrap" style={{ transitionDelay: `${delay}ms` }}
+      onClick={() => onOpen(index)}
+      role="button" tabIndex={0} aria-label={`Open photo: ${photo.alt}`}
+      onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") onOpen(index); }}
+    >
+      <Card style={{ overflow: "hidden", padding: 0 }}>
+        <div style={{ aspectRatio: "4/3", overflow: "hidden" }}>
+          <img
+            className="photo-img"
+            src={photo.src}
+            alt={photo.alt}
+            loading="lazy"
+            style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+          />
+        </div>
+        {photo.caption && (
+          <div style={{ padding: "8px 12px" }}>
+            <p style={{ fontSize: 12, fontWeight: 500, color: "var(--text-3)" }}>{photo.caption}</p>
+          </div>
+        )}
+      </Card>
+    </div>
+  );
+}
+
+/* ── Lightbox ── */
+function Lightbox({ photos, index, onClose, onPrev, onNext }) {
+  // keyboard nav + lock body scroll
+  useEffect(() => {
+    const onKey = (e) => {
+      if (e.key === "Escape")     onClose();
+      if (e.key === "ArrowLeft")  onPrev();
+      if (e.key === "ArrowRight") onNext();
+    };
+    document.addEventListener("keydown", onKey);
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.body.style.overflow = "";
+    };
+  }, [onClose, onPrev, onNext]);
+
+  const photo = photos[index];
+
+  return (
+    <div className="lb-overlay" onClick={onClose} role="dialog" aria-modal="true" aria-label="Photo lightbox">
+      {/* stop click-through on image area */}
+      <div className="lb-img-wrap" onClick={(e) => e.stopPropagation()}>
+        <img src={photo.src} alt={photo.alt} />
+        {photo.caption && <p className="lb-caption">{photo.caption}</p>}
+      </div>
+
+      {/* close */}
+      <button className="lb-close" onClick={onClose} aria-label="Close lightbox">
+        <i className="fa-solid fa-xmark" aria-hidden="true" />
+      </button>
+
+      {/* prev */}
+      {photos.length > 1 && (
+        <button className="lb-btn prev" onClick={(e) => { e.stopPropagation(); onPrev(); }} aria-label="Previous photo">
+          <i className="fa-solid fa-chevron-left" aria-hidden="true" />
+        </button>
+      )}
+
+      {/* next */}
+      {photos.length > 1 && (
+        <button className="lb-btn next" onClick={(e) => { e.stopPropagation(); onNext(); }} aria-label="Next photo">
+          <i className="fa-solid fa-chevron-right" aria-hidden="true" />
+        </button>
+      )}
+
+      {/* counter */}
+      {photos.length > 1 && (
+        <p className="lb-counter">{index + 1} / {photos.length}</p>
+      )}
+    </div>
+  );
+}
+
+/* ── Blog Card ── */
+function BlogCard({ post, delay }) {
+  const ref = useReveal();
+  return (
+    <div ref={ref} className="reveal" style={{ transitionDelay: `${delay}ms` }}>
+      <Card className="blog-card" style={{ padding: "1.25rem", height: "100%", display: "flex", flexDirection: "column" }}
+        onClick={() => window.open(post.href, "_blank")}>
+        <div style={{ display: "flex", flexWrap: "wrap", marginBottom: 8 }}>
+          {post.tags.map((t, i) => <Chip key={t} label={t} colorKey={post.tagColors[i] || "gray"} />)}
+        </div>
+        <h3 style={{ fontSize: 15, fontWeight: 700, color: "var(--text)", lineHeight: 1.4, marginBottom: 6, flex: 1 }}>{post.title}</h3>
+        <p style={{ fontSize: 13, color: "var(--text-2)", lineHeight: 1.6, marginBottom: 12 }}>{post.excerpt}</p>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+          <span style={{ fontSize: 11, color: "var(--text-3)", fontWeight: 500 }}>{post.date}</span>
+          <span style={{ display: "inline-flex", alignItems: "center", gap: 4, fontSize: 11, color: "var(--text-3)", fontWeight: 500 }}>
+            <i className="fa-solid fa-clock" style={{ fontSize: 10 }} aria-hidden="true" />
+            {post.readTime}
+          </span>
+        </div>
+      </Card>
+    </div>
+  );
+}
+
+/* ── Education Card ── */
+function EduCard({ edu, delay }) {
+  const ref = useReveal();
+  return (
+    <div ref={ref} className="reveal" style={{ transitionDelay: `${delay}ms` }}>
+      <Card style={{ padding: "1.25rem", height: "100%" }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 8, marginBottom: 6 }}>
+          <h3 style={{ fontSize: 15, fontWeight: 700, color: "var(--text)" }}>{edu.school}</h3>
+          <span style={{
+            fontSize: 11, fontWeight: 600, padding: "3px 10px",
+            borderRadius: 999, background: "var(--bg)",
+            border: "0.5px solid var(--border-md)", color: "var(--text-3)",
+            whiteSpace: "nowrap", flexShrink: 0,
+          }}>{edu.period}</span>
+        </div>
+        <p style={{ fontSize: 13, fontWeight: 600, color: "var(--accent)", marginBottom: 6 }}>{edu.degree}</p>
+        {edu.description && <p style={{ fontSize: 13, color: "var(--text-3)", lineHeight: 1.6 }}>{edu.description}</p>}
+      </Card>
+    </div>
+  );
+}
+
+/* ── Contact Button ── */
+function ContactBtn({ label, href, icon, bgColor, iconColor }) {
+  return (
+    <a href={href} target="_blank" rel="noopener noreferrer" className="contact-btn"
+      style={{
+        display: "flex", flexDirection: "column", alignItems: "center", gap: 8,
+        padding: "1.1rem 1rem", borderRadius: "var(--radius-lg)",
+        background: "var(--surface)", border: "0.5px solid var(--border)",
+        textDecoration: "none",
+      }}>
+      <div style={{
+        width: 44, height: 44, borderRadius: 12,
+        background: bgColor,
+        display: "flex", alignItems: "center", justifyContent: "center",
+      }}>
+        <i className={icon} style={{ fontSize: 18, color: iconColor }} aria-hidden="true" />
+      </div>
+      <span style={{ fontSize: 13, fontWeight: 600, color: "var(--text-2)" }}>{label}</span>
+    </a>
+  );
+}
+
+/* ── Footer ── */
+function Footer() {
+  return (
+    <footer style={{ borderTop: "0.5px solid var(--border)", padding: "2rem 1.25rem", textAlign: "center" }}>
+      <p style={{ fontSize: 13, color: "var(--text-3)", fontWeight: 500 }}>
+        © {rawh.footerYear} {rawh.name} · Built with Next.js &amp; ☕
+      </p>
+    </footer>
+  );
+}
+
+/* ── Main Page ── */
+export default function Portfolio() {
+  const [lbIndex, setLbIndex] = useState(null);
+  const openLb  = (i) => setLbIndex(i);
+  const closeLb = ()  => setLbIndex(null);
+  const prevLb  = ()  => setLbIndex((i) => (i - 1 + PHOTOS.length) % PHOTOS.length);
+  const nextLb  = ()  => setLbIndex((i) => (i + 1) % PHOTOS.length);
   return (
     <>
+      <FontLoader />
       <GlobalStyles />
-      <Background />
       <Nav />
 
-      {/* HERO */}
-      <section style={{ minHeight:'100vh', display:'flex', alignItems:'center', paddingTop:'8rem', position:'relative', zIndex:2 }}>
-        <div style={{ maxWidth:1100, margin:'0 auto', width:'100%', display:'grid', gridTemplateColumns:'1fr auto', gap:'4rem', alignItems:'center' }}>
-          <div>
-            <ParallaxText />
-            <motion.p initial={{ opacity:0, y:20 }} animate={{ opacity:1, y:0 }} transition={{ delay:0.4, duration:0.8 }}
-              style={{ color:'#94a3b8', fontSize:'1.1rem', lineHeight:1.8, maxWidth:500, marginBottom:'2.5rem' }}>
-              I build beautiful, fast web applications. Student developer exploring the intersection of design and engineering.
-            </motion.p>
-            <motion.div initial={{ opacity:0, y:20 }} animate={{ opacity:1, y:0 }} transition={{ delay:0.55, duration:0.8 }}
-              style={{ display:'flex', gap:'1rem', flexWrap:'wrap' }}>
-              <motion.a href="#projects"
-                style={{ padding:'13px 28px', borderRadius:12, fontFamily:'var(--font-body)', fontWeight:500, fontSize:'0.9rem', background:`linear-gradient(135deg, ${THEME.accent1}, ${THEME.accent2})`, color:'#fff', textDecoration:'none', border:'none', cursor:'pointer' }}
-                whileHover={{ scale:1.04, opacity:0.92 }} whileTap={{ scale:0.97 }}>
-                View My Work
-              </motion.a>
-              <motion.a href="#contact" className="glass"
-                style={{ padding:'13px 28px', borderRadius:12, fontFamily:'var(--font-body)', fontSize:'0.9rem', color:'#e2e8f0', textDecoration:'none' }}
-                whileHover={{ scale:1.04 }} whileTap={{ scale:0.97 }}>
-                Get In Touch
-              </motion.a>
-            </motion.div>
+      <main className="page-wrap">
+
+        {/* HERO */}
+        <Hero />
+
+        {/* PROJECTS */}
+        <section id="projects" style={{ marginBottom: "3.5rem" }}>
+          <SectionHeader eyebrow="projects" title="Things I've built" />
+          <div className="projects-grid">
+            {PROJECTS.map((p, i) => (
+              <ProjectCard key={p.title} project={p} delay={i * 80} />
+            ))}
           </div>
-          <motion.div initial={{ opacity:0, scale:0.9, rotate:-4 }} animate={{ opacity:1, scale:1, rotate:0 }}
-            transition={{ delay:0.5, duration:1, ease:[0.22,1,0.36,1] }} style={{ display:'none' }} className="md-show">
-            <GlassCard style={{ width:280, height:320, display:'flex', flexDirection:'column', justifyContent:'center', alignItems:'center', gap:'1rem' }} hover={false}>
-              <div style={{ width:100, height:100, borderRadius:'50%', background:`linear-gradient(135deg, ${THEME.accent1}40, ${THEME.accent2}40)`, display:'flex', alignItems:'center', justifyContent:'center', fontSize:'2.5rem', border:`1px solid ${THEME.accent1}30` }}>👨‍💻</div>
-              <p style={{ fontFamily:'var(--font-display)', fontWeight:700, fontSize:'1rem' }}>Your Name</p>
-              <Tag label="Open to work" />
-            </GlassCard>
-          </motion.div>
-        </div>
-      </section>
+        </section>
 
-      {/* PROJECTS */}
-      <section id="projects" style={{ position:'relative', zIndex:2 }}>
-        <div style={{ maxWidth:1100, margin:'0 auto' }}>
-          <SectionHeader eyebrow="projects" title="Projects" subtitle="Things I've built." />
-          <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(340px, 1fr))', gap:'1.5rem' }}>
-            {PROJECTS.map((p,i) => <ScrollReveal key={i} delay={i*0.1}><ProjectCard {...p} /></ScrollReveal>)}
+        {/* SKILLS */}
+        <section id="skills" style={{ marginBottom: "3.5rem" }}>
+          <div style={{ paddingLeft: 0, paddingRight: 0 }}>
+            <SectionHeader eyebrow="toolbox" title="Skills & tech" />
           </div>
-        </div>
-      </section>
-
-      {/* SKILLS */}
-      <section id="skills" style={{ position:'relative', zIndex:2, paddingLeft:0, paddingRight:0 }}>
-        <div style={{ maxWidth:1100, margin:'0 auto', paddingLeft:'1.5rem', paddingRight:'1.5rem' }}>
-          <SectionHeader eyebrow="toolbox" title="Skills & Tech" subtitle="Technologies I reach for day-to-day." />
-        </div>
-        <ScrollReveal><SkillsTicker skills={SKILLS} direction="left" speed={30} /></ScrollReveal>
-        <ScrollReveal delay={0.1}><SkillsTicker skills={[...SKILLS].reverse()} direction="right" speed={38} /></ScrollReveal>
-      </section>
-
-      {/* PHOTOS */}
-      <section id="photos" style={{ position:'relative', zIndex:2 }}>
-        <div style={{ maxWidth:1100, margin:'0 auto' }}>
-          <SectionHeader eyebrow="life outside code" title="Photos" subtitle="A few frames from my world." />
-          <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(260px, 1fr))', gap:'1rem' }}>
-            {PICTURES.map((pic,i) => <ScrollReveal key={i} delay={i*0.08}><PictureCard {...pic} /></ScrollReveal>)}
+          <div style={{ display: "flex", flexDirection: "column", gap: 10, margin: "0 -1.25rem" }}>
+            <SkillsTicker skills={SKILLS_ROW1} direction="left"  speed={26} />
+            <SkillsTicker skills={SKILLS_ROW2} direction="right" speed={32} />
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* BLOG */}
-      <section id="blog" style={{ position:'relative', zIndex:2 }}>
-        <div style={{ maxWidth:1100, margin:'0 auto' }}>
-          <SectionHeader eyebrow="writing" title="Blog" subtitle="Thoughts on code, design, and building things." />
-          <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(300px, 1fr))', gap:'1.5rem' }}>
-            {BLOGS.map((b,i) => <ScrollReveal key={i} delay={i*0.1}><BlogCard {...b} /></ScrollReveal>)}
+        {/* PHOTOS */}
+        <section id="photos" style={{ marginBottom: "3.5rem" }}>
+          <SectionHeader eyebrow="life outside code" title="Photos" />
+          <div className="photos-grid">
+            {PHOTOS.map((photo, i) => (
+              <PhotoCard key={photo.src} photo={photo} index={i} onOpen={openLb} delay={i * 60} />
+            ))}
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* EDUCATION */}
-      <section id="education" style={{ position:'relative', zIndex:2 }}>
-        <div style={{ maxWidth:1100, margin:'0 auto' }}>
-          <SectionHeader eyebrow="background" title="Education" subtitle="Where I've been learning." />
-          <div style={{ display:'flex', flexDirection:'column', gap:'1rem' }}>
-            {EDUCATION.map((e,i) => <ScrollReveal key={i} delay={i*0.1}><EducationCard {...e} /></ScrollReveal>)}
+        {lbIndex !== null && (
+          <Lightbox photos={PHOTOS} index={lbIndex} onClose={closeLb} onPrev={prevLb} onNext={nextLb} />
+        )}
+
+        {/* BLOG */}
+        <section id="blog" style={{ marginBottom: "3.5rem" }}>
+          <SectionHeader eyebrow="writing" title="Blog" />
+          <div className="blog-grid">
+            {BLOG_POSTS.map((post, i) => (
+              <BlogCard key={post.title} post={post} delay={i * 80} />
+            ))}
           </div>
-        </div>
-      </section>
-
-      {/* CONTACT */}
-      <section id="contact" style={{ position:'relative', zIndex:2 }}>
-        <div style={{ maxWidth:700, margin:'0 auto', textAlign:'center' }}>
-          <ScrollReveal>
-            <p style={{ fontSize:'0.75rem', letterSpacing:'0.2em', textTransform:'uppercase', color:THEME.accent1, marginBottom:'1rem' }}>— say hello</p>
-            <h2 style={{ fontFamily:'var(--font-display)', fontSize:'clamp(2.5rem, 6vw, 4rem)', fontWeight:800, lineHeight:1.1, marginBottom:'1.25rem' }}>
-              Let's build<br /><span className="grad-text">something great.</span>
-            </h2>
-            <p style={{ color:'#64748b', lineHeight:1.8, marginBottom:'2.5rem' }}>Open to freelance projects, collaborations, and full-time opportunities.</p>
-            <div style={{ display:'flex', flexWrap:'wrap', justifyContent:'center', gap:'0.75rem' }}>
-              <ContactButton label="Email" href="mailto:you@example.com" icon="✉️" />
-              <ContactButton label="GitHub" href="https://github.com" icon="🐙" />
-              <ContactButton label="LinkedIn" href="https://linkedin.com" icon="💼" />
-              <ContactButton label="Twitter" href="https://twitter.com" icon="🐦" />
-            </div>
-          </ScrollReveal>
-        </div>
-      </section>
-
-      {/* FOOTER */}
-      <footer style={{ borderTop:'1px solid rgba(255,255,255,0.06)', padding:'2rem 1.5rem', textAlign:'center', position:'relative', zIndex:2 }}>
-        <p style={{ color:'#334155', fontSize:'0.8rem', fontFamily:'var(--font-body)' }}>© 2025 rawh · Built with Next.js, Framer Motion & too much ☕</p>
-      </footer>
+        </section>
+        {/* EDUCATION */}
+        <section id="education" style={{ marginBottom: "3.5rem" }}>
+          <SectionHeader eyebrow="background" title="Education" />
+          <div className="edu-grid">
+            {EDUCATION.map((edu, i) => (
+              <EduCard key={edu.school} edu={edu} delay={i * 80} />
+            ))}
+          </div>
+        </section>
+        {/* CONTACT */}
+        <section id="contact" style={{ marginBottom: "3.5rem" }}>
+          <SectionHeader eyebrow="say hello" title="Let's build something great" />
+          <div className="contact-grid">
+            <ContactBtn label="Email"    href={`mailto:${rawh.email}`} icon="fa-solid fa-envelope"    bgColor="#EEEDFE" iconColor="#534AB7" />
+            <ContactBtn label="GitHub"   href={rawh.github}           icon="fa-brands fa-github"      bgColor="#F1EFE8" iconColor="#444441" />
+            <ContactBtn label="LinkedIn" href={rawh.linkedin}         icon="fa-brands fa-linkedin"    bgColor="#E6F1FB" iconColor="#185FA5" />
+            <ContactBtn label="Telegram"  href={rawh.telegram}          icon="fa-brands fa-telegram"   bgColor="#F1EFE8" iconColor="#444441" />
+            <ContactBtn label="Facebook"  href={rawh.facebook}           icon="fa-brands fa-facebook"    bgColor="#E6F1FB" iconColor="#1DA1F2" />
+          </div>
+        </section>
+      </main>
+      <Footer />
     </>
   );
 }
