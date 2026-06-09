@@ -27,10 +27,10 @@ const rawh = {
 // ── 2. PROJECTS ──────────────────────────────────────────────────────────────
 const PROJECTS = [
   {
-    title: "Project Alpha",
+    title: "Static web ",
     description:
-      "A full-stack web app with real-time collaboration, role-based auth, and a focus on great UX design patterns.",
-    tags: ["Next.js", "TypeScript", "PostgreSQL"],
+      "A school website built with HTML, CSS, and Tailwind CSS. Features a documentation section for marketing research.",
+    tags: ["HTML", "CSS", "Tailwind"],
     tagColors: ["purple", "teal", "gray"],
     github: "#",
     demo: "#",
@@ -39,13 +39,13 @@ const PROJECTS = [
     accentBg: "#EEEDFE",
   },
   {
-    title: "Project Beta",
+    title: "Project: Event Management System",
     description:
-      "E-commerce platform with real-time inventory management, Stripe payments, and an analytics dashboard.",
-    tags: ["React", "Node.js", "Stripe"],
-    tagColors: ["coral", "teal", "green"],
-    github: "#",
-    demo: "#",
+      "A school Web-project, comprehensive event management system with real-time registration, ticketing, and analytics.",
+    tags: ["PHP", "Laravel", "Bootstrap"],
+    tagColors: ["coral", "teal", "blue"],
+    github: "https://github.com/rawcig/event-mgt.git",
+    demo: "https://wp-laravel-midterm.onrender.com/",
     icon: "fa-solid fa-cart-shopping",
     accent: "#1D9E75",
     accentBg: "#E1F5EE",
@@ -74,7 +74,7 @@ const SKILLS_ROW1 = [
   { name: "Node.js",    icon: "fa-brands fa-node-js",      color: "#EAF3DE", iconColor: "#3B6D11" },
   { name: "PostgreSQL", icon: "fa-solid fa-database",      color: "#E1F5EE", iconColor: "#0F6E56" },
   { name: "MongoDB",    icon: "fa-solid fa-leaf",          color: "#EAF3DE", iconColor: "#3B6D11" },
-  { name: "Docker",     icon: "fa-brands fa-docker",       color: "#E6F1FB", iconColor: "#185FA5" },
+  { name: "mysql",     icon: "fa-solid fa-database",       color: "#E6F1FB", iconColor: "#185FA5" },
 ];
 
 const SKILLS_ROW2 = [
@@ -130,16 +130,28 @@ const BLOG_POSTS = [
 // ── 6. EDUCATION ──────────────────────────────────────────────────────────────
 const EDUCATION = [
   {
-    school: "Your University",
-    degree: "BSc Computer Science",
-    period: "2020 – 2024",
-    description: "Focus on distributed systems and human-computer interaction.",
+    school: "Setec Institute",
+    degree: "Management Information System",
+    period: "2023 — Present",
+    description: "Bachelor\'s Degree in Management Information Systems.",
   },
   {
-    school: "Coding Bootcamp",
-    degree: "Full Stack Web Development",
-    period: "2023",
-    description: "Intensive 12-week program covering the modern web stack.",
+    school: "Setec Institute",
+    degree: "Design",
+    period: "2021-2022",
+    description: "Foundation Year of Bachelor\'s Degree in Design",
+  },
+  {
+    school: "Hunsen Borey 100 Khnorng High School",
+    degree: "High School Diploma",
+    period: "2018 — 2021",
+    description: "Graduated with honors, rank C in overall grade.",
+  },
+  {
+    school: "Sovannaphumi School",
+    degree: "GEP",
+    period: "2015 — 2019",
+    description: "Completed General English Program Level 7",
   },
 ];
 
@@ -493,7 +505,7 @@ function Chip({ label, colorKey = "gray" }) {
 }
 
 /* ── Section Header ── */
-function SectionHeader({ eyebrow, title }) {
+function SectionHeader({ eyebrow, title, desc }) {
   const ref = useReveal();
   return (
     <div ref={ref} className="reveal" style={{ marginBottom: "1.5rem" }}>
@@ -501,6 +513,7 @@ function SectionHeader({ eyebrow, title }) {
         — {eyebrow}
       </p>
       <h2 className="section-title" style={{ fontSize: 28, fontWeight: 700, color: "var(--text)" }}>{title}</h2>
+      {desc && <p style={{ fontSize: 16, color: "var(--text-2)", lineHeight: 1.6 }}>{desc}</p>}
     </div>
   );
 }
@@ -964,7 +977,7 @@ export default function Portfolio() {
 
         {/* PHOTOS */}
         <section id="photos" style={{ marginBottom: "3.5rem" }}>
-          <SectionHeader eyebrow="life outside code" title="Photos" />
+          <SectionHeader eyebrow="life outside code" title="Photos" desc="Productiviies and stuff" />
           <div className="photos-grid">
             {PHOTOS.map((photo, i) => (
               <PhotoCard key={photo.src} photo={photo} index={i} onOpen={openLb} delay={i * 60} />
@@ -987,10 +1000,10 @@ export default function Portfolio() {
         </section>
         {/* EDUCATION */}
         <section id="education" style={{ marginBottom: "3.5rem" }}>
-          <SectionHeader eyebrow="background" title="Education" />
+          <SectionHeader eyebrow="background" title="Education" desc="My academic journey and qualifications." />
           <div className="edu-grid">
             {EDUCATION.map((edu, i) => (
-              <EduCard key={edu.school} edu={edu} delay={i * 80} />
+              <EduCard key={`${edu.school}-${i}`} edu={edu} delay={i * 80} />
             ))}
           </div>
         </section>
