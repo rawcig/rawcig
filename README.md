@@ -1,36 +1,62 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Neang Sokdara — Web Developer in Training ⚔️
 
-## Getting Started
+> *"I am the bone of my code. JavaScript is my body, CSS is my blood."*
+> — Probably me, at 2am debugging
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 🌸 Who Am I?
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Think of me as a protagonist at the start of his arc.
+No legendary skills *yet* — but the grind arc? Fully unlocked. 🔓
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+- 🧬 Currently training to master the web
+- 💻 My IDE is basically my dojo
+- 📺 Fueled by good anime and bad sleep schedules
+- 🌀 Power level: *still ascending*
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## ⚡ Jutsu / Tech Stack
 
-To learn more about Next.js, take a look at the following resources:
+| Rank | Skill |
+|---|---|
+| ✅ Mastered | HTML, CSS |
+| 🔥 Training | JavaScript, React |
+| 📖 On the scroll | Node.js, Databases *(update as needed)* |
+| 🛠️ Tools | Git, GitHub, VS Code |
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 🏆 Story Arcs (Projects)
 
-## Deploy on Vercel
+### 📜 [Project Name One](https://github.com/rawcig/event-mgt)
+> *Arc 1 — The Beginning*
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Where it all started. Replace this with  actual project description — what it does, what you learned, why you built it.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+<!-- ### 📜 [Project Name Two](https://github.com/rawcig/project-two)
+> *Arc 2 — The Power-Up*
+
+This one pushed me further. Describe what the project does and the tech behind it. Feel free to hype self up! -->
+
+---
+
+## 📊 Power Level Stats
+
+![Sokdara's GitHub Stats](https://github-readme-stats.vercel.app/api?rawcig=rawcig&show_icons=true&theme=tokyonight&hide_border=true)
+
+![Top Languages](https://github-readme-stats.vercel.app/api/top-langs/?rawcig=rawcig&layout=compact&theme=tokyonight&hide_border=true)
+
+---
+
+## 🌐 Find Me in the Real World
+
+No teleportation jutsu yet, but here's where you can reach me:
+
+- 🐙 GitHub: [@rawcig](https://github.com/rawcig)
+- 📧 Email: sokdara.work@email.com
+
+---
+
+*My story isn't finished yet. Stay tuned for the next arc. 🍃*
