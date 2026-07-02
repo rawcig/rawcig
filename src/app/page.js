@@ -422,7 +422,7 @@ function Hero() {
             }}>
               {/* <i className="fa-solid fa-laptop-code" style={{ fontSize: 32, color: "var(--accent)" }} aria-hidden="true" /> */}
               {/* <Image loading="eager" src='/img/rawh.jpg' alt="Sokdara" width={164} height={164} style={{ borderRadius: 999, objectFit: "cover", alignSelf: 'center', objectPosition: "center top" }} /> */}
-              <img src="/img/rawh.jpg" alt="Sokdara" width={164} height={164} style={{ borderRadius: 999, objectFit: "cover", alignSelf: 'center', objectPosition: "center top" }} />
+              <Image src="/img/rawh.jpg" alt="Sokdara" width={164} height={164} style={{ borderRadius: 999, objectFit: "cover", alignSelf: 'center', objectPosition: "center top" }} />
             </div>
           </div>
               {/* github profile link: https://avatars.githubusercontent.com/u/157391106?v=4  */}
@@ -840,7 +840,7 @@ function Footer() {
 }
 
 /* ── Main Page ── */
-export default function Portfolio() {
+export default function hehe() {
   const [lbIndex, setLbIndex] = useState(null);
   const openLb  = (i) => setLbIndex(i);
   const closeLb = ()  => setLbIndex(null);
