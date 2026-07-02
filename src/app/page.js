@@ -1,8 +1,8 @@
 'use client';
 
 import { motion, useInView, useScroll, useTransform, useSpring, useMotionValue } from 'framer-motion';
-import { Asset } from 'next/font/google';
 import { useRef, useState, useEffect } from 'react';
+import Image from 'next/image';
 /**
  * Portfolio — iOS-style minimal solid card design
  * Playful & approachable tone
@@ -407,8 +407,8 @@ function Hero() {
     <section style={{ padding: "5rem 0 3rem" }}>
       <Card className="h-card" style={{ padding: "2.5rem", overflow: "hidden", position: "relative" }}>
         {/* decorative blobs — drift on scroll for a subtle parallax feel */}
-        <motion.div style={{ position: "absolute", top: -60, right: -60, width: 220, height: 220, borderRadius: "50%", background: "#EEEDFE", opacity: .6, pointerEvents: "none", y: blob1Y, x: blob1X }} />
-        <motion.div style={{ position: "absolute", bottom: -40, left: -40, width: 150, height: 150, borderRadius: "50%", background: "#E1F5EE", opacity: .5, pointerEvents: "none", y: blob2Y, x: blob2X }} />
+        <motion.div style={{ position: "absolute", top: -60, right: -60, width: 220, height: 220, borderRadius: "50%", background: "#3d3b5d", opacity: .6, pointerEvents: "none", y: blob1Y, x: blob1X }} />
+        <motion.div style={{ position: "absolute", bottom: -40, left: -40, width: 150, height: 150, borderRadius: "50%", background: "#1a1148", opacity: .5, pointerEvents: "none", y: blob2Y, x: blob2X }} />
 
         <div className="hero-section" style={{ display: "flex", alignItems: "center", gap: "2.5rem", position: "relative", zIndex: 1 }}>
           {/* avatar */}
@@ -421,7 +421,7 @@ function Hero() {
               boxShadow: "0 0 0 1px var(--border-md)",
             }}>
               {/* <i className="fa-solid fa-laptop-code" style={{ fontSize: 32, color: "var(--accent)" }} aria-hidden="true" /> */}
-              <img src="/img/rawh.jpg" alt="Sokdara" style={{ width: 164, height: 164, borderRadius: 999, objectFit:"cover",alignSelf:'center', objectPosition:"center top" }} />
+              <Image loading="eager" src='/img/rawh.jpg' alt="Sokdara" width={164} height={164} style={{ borderRadius: 999, objectFit: "cover", alignSelf: 'center', objectPosition: "center top" }} />
             </div>
           </div>
               {/* github profile link: https://avatars.githubusercontent.com/u/157391106?v=4  */}
