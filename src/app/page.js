@@ -12,7 +12,6 @@ import Image from 'next/image';
  * ─────────────────────────────────────────────
  */
 
-// ── 1. SITE CONFIG ──────────────────────────────────────────────────────────
 const rawh = {
   name: "Neang Sokdara",
   tagline: "I build beautiful, fast web apps — where design meets engineering.",
@@ -25,7 +24,6 @@ const rawh = {
   footerYear: 2026,
 };
 
-// ── 1b. ABOUT ────────────────────────────────────────────────────────────────
 const ABOUT = {
   bio: "I'm an MIS student at SETEC institute who likes building things end-to-end — from backend logic to the frontend they run on, almost called myself a fullstack? Most of my time goes into web apps, and now I start learning Spring boot, API to improve my backend skills.",
   facts: [
@@ -36,7 +34,6 @@ const ABOUT = {
   ],
 };
 
-// ── 2. PROJECTS ──────────────────────────────────────────────────────────────
 const PROJECTS = [
   {
     title: "Event Management System",
@@ -51,13 +48,14 @@ const PROJECTS = [
     accentBg: "var(--accent-bg)",
   },
   {
-    title: "Self-Hosting Setup",
+    title: "Web-hosting on AWS EC2",
     description:
-      "Repurposed an old laptop into a home server running Ubuntu Server, with Nginx as a reverse proxy. Currently solving a CGNAT issue from my ISP by setting up Cloudflare Tunnel so sokdara.xyz stays reachable without port forwarding.",
+      "Hosting my static web page on AWS EC2 with Ubuntu Server.",
     tags: ["Ubuntu Server", "Nginx", "Linux"],
     tagColors: ["purple"],
-    github: "#",
-    demo: "#",
+    github: "https://www.youtube.com/watch?v=5DNk6uGO6rI&list=PLTvEyjZNgG4w",
+    link: "youtube",
+    demo: "http://www.sokdara.xyz",
     icon: "fa-solid fa-server",
     accent: "var(--accent)",
     accentBg: "var(--accent-bg)",
@@ -79,13 +77,44 @@ const PROJECTS = [
 const LINUX = {
   playlistId: "PLTvEyjZNgG4w",
   playlistUrl: "https://www.youtube.com/playlist?list=PLTvEyjZNgG4w",
-  title: "Self-hosting Web",
+  title: "Web-hosting on AWS EC2",
   description:
     "Documenting my self-hosting journey — Ubuntu Server setup on AWS EC2, reverse proxying with Nginx, Docker deployments, and working around my school project.",
   videoCount: 6,
 };
 
-// ── 3. SKILLS ─────────────────────────────────────────────────────────────────
+const EXTRA =[
+  {
+    title: "ADOBE fundamentals",
+    excerpt: "Working through photoshop, illustrator, and after effects to learn the basics of design.",
+    date: "finished",
+    readTime: "School",
+    tags: ["ADOBE", "Design"],
+    tagColors: ["teal"],
+    href: "#",
+    status: "check",
+  },
+  {
+    title: "System Analysis",
+    excerpt: "Learning fundamentals of system analysis and design. Making use case diagrams, ERD diagrams and simplifying.",
+    date: "finished",
+    readTime: "School",
+    tags: ["DATA"],
+    tagColors: ["teal"],
+    href: "#",
+    status: "check",
+  },
+  {
+    title: "PHP & Laravel fundamentals",
+    excerpt: "Part of a school program, learning how to use PHP and Laravel integrate with database. Click me to check it out!. ",
+    date: "finished",
+    readTime: "School",
+    tags: ["PHP", "Laravel", "Bootstrap"],
+    tagColors: ["amber"],
+    href: "https://wp-laravel-midterm.onrender.com/",
+    status: "check",
+  },
+]
 // icon: Font Awesome class  |  color: hex for the icon circle bg
 const SKILLS_ROW1 = [
   { name: "JavaScript", icon: "fa-brands fa-js",           color: "var(--bg)", iconColor: "var(--text-2)" },
@@ -96,23 +125,33 @@ const SKILLS_ROW1 = [
   { name: "Java",       icon: "fa-brands fa-java",         color: "var(--bg)", iconColor: "var(--text-2)" },
   { name: "Spring Boot",icon: "fa-solid fa-leaf",          color: "var(--bg)", iconColor: "var(--text-2)" },
   { name: "Dart",       icon: "fa-solid fa-code",          color: "var(--bg)", iconColor: "var(--text-2)" },
-];
-
-const SKILLS_ROW2 = [
   { name: "Docker",     icon: "fa-brands fa-docker",       color: "var(--bg)", iconColor: "var(--text-2)" },
   { name: "Git",        icon: "fa-brands fa-git-alt",      color: "var(--bg)", iconColor: "var(--text-2)" },
   { name: "Nginx",      icon: "fa-solid fa-server",        color: "var(--bg)", iconColor: "var(--text-2)" },
   { name: "Linux",      icon: "fa-brands fa-linux",        color: "var(--bg)", iconColor: "var(--text-2)" },
   { name: "MySQL",      icon: "fa-solid fa-database",      color: "var(--bg)", iconColor: "var(--text-2)" },
   { name: "MikroTik",   icon: "fa-solid fa-network-wired", color: "var(--bg)", iconColor: "var(--text-2)" },
-  // { name: "Cloudflare", icon: "fa-brands fa-cloudflare",   color: "var(--bg)", iconColor: "var(--text-2)" },
   { name: "Tailwind",   icon: "fa-solid fa-wind",          color: "var(--bg)", iconColor: "var(--text-2)" },
 ];
 
-// ── 4. PHOTOS ─────────────────────────────────────────────────────────────────
+const SKILLS_ROW2 = [
+  { name: "Tailwind",   icon: "fa-solid fa-wind",          color: "var(--bg)", iconColor: "var(--text-2)" },
+  { name: "MikroTik",   icon: "fa-solid fa-network-wired", color: "var(--bg)", iconColor: "var(--text-2)" },
+  { name: "MySQL",      icon: "fa-solid fa-database",      color: "var(--bg)", iconColor: "var(--text-2)" },
+  { name: "Linux",      icon: "fa-brands fa-linux",        color: "var(--bg)", iconColor: "var(--text-2)" },
+  { name: "Nginx",      icon: "fa-solid fa-server",        color: "var(--bg)", iconColor: "var(--text-2)" },
+  { name: "Git",        icon: "fa-brands fa-git-alt",      color: "var(--bg)", iconColor: "var(--text-2)" },
+  { name: "Docker",     icon: "fa-brands fa-docker",       color: "var(--bg)", iconColor: "var(--text-2)" },
+  { name: "Dart",       icon: "fa-solid fa-code",          color: "var(--bg)", iconColor: "var(--text-2)" },
+  { name: "Spring Boot",icon: "fa-solid fa-leaf",          color: "var(--bg)", iconColor: "var(--text-2)" },
+  { name: "Java",       icon: "fa-brands fa-java",         color: "var(--bg)", iconColor: "var(--text-2)" },
+  { name: "Laravel",    icon: "fa-brands fa-laravel",      color: "var(--bg)", iconColor: "var(--text-2)" },
+  { name: "PHP",        icon: "fa-brands fa-php",          color: "var(--bg)", iconColor: "var(--text-2)" },
+  { name: "Next.js",    icon: "fa-solid fa-n",             color: "var(--bg)", iconColor: "var(--text-2)" },
+  { name: "React",      icon: "fa-brands fa-react",        color: "var(--bg)", iconColor: "var(--text-2)" },
+  { name: "JavaScript", icon: "fa-brands fa-js",           color: "var(--bg)", iconColor: "var(--text-2)" },
+];
 
-
-// ── 5. NOW LEARNING ────────────────────────────────────────────────────────
 const NOW_LEARNING = [
   {
     title: "Spring Boot & REST APIs",
@@ -122,6 +161,7 @@ const NOW_LEARNING = [
     tags: ["Java", "Spring Boot"],
     tagColors: ["teal"],
     href: "#",
+    status: "clock",
   },
   {
     title: "Dart & OOP fundamentals",
@@ -131,6 +171,7 @@ const NOW_LEARNING = [
     tags: ["Dart", "OOP"],
     tagColors: ["teal"],
     href: "#",
+    status: "clock",
   },
   {
     title: "Flutter Self-learning",
@@ -140,10 +181,10 @@ const NOW_LEARNING = [
     tags: ["Networking", "School"],
     tagColors: ["amber", "gray"],
     href: "#",
+    status: "clock",
   },
 ];
 
-// ── 6. EDUCATION ──────────────────────────────────────────────────────────────
 const EDUCATION = [
   {
     school: "Setec Institute",
@@ -171,9 +212,6 @@ const EDUCATION = [
   },
 ];
 
-// ─────────────────────────────────────────────
-//  THEME — edit colors here
-// ─────────────────────────────────────────────
 const CHIP_COLORS = {
   // strong — accent fill, used for the "primary" tag
   purple: { bg: "var(--accent-bg)", color: "var(--accent)",  border: "transparent" },
@@ -187,13 +225,6 @@ const CHIP_COLORS = {
   gray:   { bg: "var(--bg)",        color: "var(--text-3)",  border: "transparent" },
 };
 
-// ─────────────────────────────────────────────
-//  DO NOT EDIT BELOW — Components & Layout
-// ─────────────────────────────────────────────
-
-// import { useState, useEffect, useRef } from "react";
-
-/* ── Font Awesome + Google Fonts loader ── */
 function FontLoader() {
   useEffect(() => {
     const links = [
@@ -218,14 +249,6 @@ function FontLoader() {
   return null;
 }
 
-/* ── Global Styles ── */
-// function GlobalStyles() {
-//   return (
-    
-//   );
-// }
-
-/* ── Reveal on scroll hook ── */
 function useReveal() {
   const ref = useRef(null);
   useEffect(() => {
@@ -241,7 +264,6 @@ function useReveal() {
   return ref;
 }
 
-/* ── Pop Card: bouncy scroll entrance + cursor tilt ── */
 function PopCard({ children, delay = 0, tilt = true, style = {}, className = "" }) {
   const cardRef = useRef(null);
   const rotateX = useMotionValue(0);
@@ -278,7 +300,6 @@ function PopCard({ children, delay = 0, tilt = true, style = {}, className = "" 
   );
 }
 
-
 function Chip({ label, colorKey = "gray" }) {
   const c = CHIP_COLORS[colorKey] || CHIP_COLORS.gray;
   return (
@@ -292,21 +313,50 @@ function Chip({ label, colorKey = "gray" }) {
   );
 }
 
-/* ── Section Header ── */
 function SectionHeader({ eyebrow, title, desc }) {
   const ref = useReveal();
+  const sentinelRef = useRef(null);
+  const [stuck, setStuck] = useState(false);
+
+  useEffect(() => {
+    const el = sentinelRef.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([entry]) => setStuck(!entry.isIntersecting),
+      // -15px matches the eyebrow's `top: 14` sticky offset (+1px buffer)
+      { threshold: 0, rootMargin: "-15px 0px 0px 0px" }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
+
   return (
     <>
-      <p className="section-eyebrow" style={{
-        position: "sticky", top: 14, zIndex: 3, alignSelf: "flex-start",
-        display: "inline-flex", alignItems: "center", width: "fit-content",
-        fontSize: 11, fontWeight: 700, letterSpacing: ".14em", textTransform: "uppercase",
-        color: "var(--accent)", marginBottom: 6,
-        background: "var(--surface)", border: "0.5px solid var(--border)",
-        padding: "8px 12px", borderRadius: 999,
-      }}>
+      {/* invisible tripwire — sits right above the sticky eyebrow */}
+      <div ref={sentinelRef} style={{ height: 1 }} />
+
+      <p
+        className="section-eyebrow"
+        style={{
+          position: "sticky", top: 14, zIndex: 3, alignSelf: "flex-start",
+          display: "inline-flex", alignItems: "center", width: "fit-content",
+          fontFamily: "var(--font)",
+          fontSize: stuck ? 11 : 13,
+          fontWeight: stuck ? 700 : 600,
+          letterSpacing: stuck ? ".14em" : "0",
+          textTransform: stuck ? "uppercase" : "none",
+          color: stuck ? "var(--accent)" : "var(--text-2)",
+          marginBottom: 6,
+          background: stuck ? "var(--surface)" : "transparent",
+          border: stuck ? "0.5px solid var(--border)" : "0.5px solid transparent",
+          padding: stuck ? "8px 12px" : "0px",
+          borderRadius: 999,
+          transition: "font-size .25s ease, color .25s ease, background .25s ease, border-color .25s ease, padding .25s ease, letter-spacing .25s ease",
+        }}
+      >
         {eyebrow}
       </p>
+
       <div ref={ref} className="reveal" style={{ marginBottom: "1.5rem" }}>
         <h2 className="section-title" style={{ fontSize: 28, fontWeight: 700, color: "var(--text)" }}>{title}</h2>
         {desc && <p style={{ fontSize: 16, color: "var(--text-2)", lineHeight: 1.6 }}>{desc}</p>}
@@ -315,7 +365,6 @@ function SectionHeader({ eyebrow, title, desc }) {
   );
 }
 
-/* ── Card wrapper ── */
 function Card({ children, style = {}, className = "", onClick }) {
   return (
     <div
@@ -333,28 +382,57 @@ function Card({ children, style = {}, className = "", onClick }) {
   );
 }
 
-/* ── Nav ── */
 const NAV_ITEMS = [
   { id: "about",    label: "About",    icon: "fa-solid fa-user" },
-  { id: "projects", label: "Projects", icon: "fa-brands fa-jira" },
+  { id: "projects", label: "Projects", icon: "fa-brands fa-r-project" },
   { id: "skills",   label: "Skills",   icon: "fa-solid fa-star" },
   { id: "linux",    label: "Linux",    icon: "fa-brands fa-linux" },
-  // { id: "photos",   label: "Photos",   icon: "fa-solid fa-camera" },
   { id: "blog",     label: "Learning", icon: "fa-solid fa-graduation-cap" },
+  { id: "extra",   label: "Extra",   icon: "fa-solid fa-plus" },
   { id: "contact",  label: "Contact",  icon: "fa-solid fa-envelope" },
 ];
 
 function Nav() {
   const [active, setActive] = useState("");
+  const tickingRef = useRef(false);
+  const clickLockRef = useRef(false); // suppress scroll-spy briefly after a click
+
   useEffect(() => {
     const sections = NAV_ITEMS.map((n) => document.getElementById(n.id)).filter(Boolean);
-    const obs = new IntersectionObserver(
-      (entries) => entries.forEach((e) => { if (e.isIntersecting) setActive(e.target.id); }),
-      { rootMargin: "-40% 0px -40% 0px", threshold: 0 }
-    );
-    sections.forEach((s) => obs.observe(s));
-    return () => obs.disconnect();
+
+    const updateActive = () => {
+      tickingRef.current = false;
+      if (clickLockRef.current) return; // don't fight the optimistic click state
+      const probeY = window.innerHeight * 0.35;
+      let current = sections[0]?.id ?? "";
+      for (const sec of sections) {
+        if (sec.getBoundingClientRect().top <= probeY) current = sec.id;
+      }
+      setActive((prev) => (prev !== current ? current : prev));
+    };
+
+    const onScroll = () => {
+      if (!tickingRef.current) {
+        tickingRef.current = true;
+        requestAnimationFrame(updateActive);
+      }
+    };
+
+    updateActive();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
   }, []);
+
+  const handleNavClick = (id) => {
+    setActive(id); // instant feedback, don't wait for the scroll to catch up
+    clickLockRef.current = true;
+    window.clearTimeout(handleNavClick._t);
+    handleNavClick._t = window.setTimeout(() => { clickLockRef.current = false; }, 700);
+  };
 
   return (
     <nav
@@ -373,6 +451,7 @@ function Nav() {
           <a
             key={id}
             href={`#${id}`}
+            onClick={() => handleNavClick(id)}
             className={`dock-btn${active === id ? " dock-active" : ""}`}
             aria-label={label}
             style={{
@@ -385,7 +464,7 @@ function Nav() {
               border: "none", flexShrink: 0,
             }}
           >
-              
+
             <i className={icon} style={{ fontSize: 15, flexShrink: 0 }} aria-hidden="true" />
             <span className="dock-label" style={{ paddingRight: 12, borderRadius: 999 }}>{label}</span>
           </a>
@@ -395,7 +474,6 @@ function Nav() {
   );
 }
 
-/* ── Hero ── */
 function Hero() {
   const { scrollY } = useScroll();
   const blob1Y = useTransform(scrollY, [0, 700], [0, 130]);
@@ -479,7 +557,6 @@ function Hero() {
   );
 }
 
-/* ── About Section ── */
 function AboutSection() {
   const ref = useReveal();
   return (
@@ -525,11 +602,10 @@ function AboutSection() {
   );
 }
 
-/* ── Project Card ── */
 function ProjectCard({ project, delay }) {
   return (
     <PopCard delay={delay}>
-      <Card className="proj-card" style={{ padding: "1.25rem", display: "flex", flexDirection: "column" }}>
+      <Card className="proj-card" style={{ padding: "1.25rem", display: "flex", minHeight: "100%", flexDirection: "column" }}>
         {/* proj-card-inner becomes row on mobile via CSS */}
         <div className="proj-card-inner" style={{ display: "flex", flexDirection: "column", gap: 8, flex: 1, minHeight:0 }}>
           <div className="proj-icon-wrap" style={{
@@ -558,8 +634,8 @@ function ProjectCard({ project, delay }) {
                     borderRadius: 999, border: "0.5px solid var(--border-md)",
                     color: "var(--text-2)", textDecoration: "none", background: "var(--surface)",
                   }}>
-                  <i className="fa-brands fa-github" style={{ fontSize: 13 }} aria-hidden="true" />
-                  GitHub
+                  <i className={`fa-brands fa-${project.link || "github"}`} style={{ fontSize: 13 }} aria-hidden="true" />
+                  {project.link === "youtube" ? "Youtube" : "GitHub"}
                 </a>
               )}
               {project.demo && (
@@ -583,7 +659,6 @@ function ProjectCard({ project, delay }) {
   );
 }
 
-/* ── Skills Ticker ── */
 function SkillPill({ skill }) {
   return (
     <div className="skill-pill-item" style={{
@@ -608,25 +683,90 @@ function SkillPill({ skill }) {
 }
 
 function SkillsTicker({ skills, direction = "left", speed = 28 }) {
-  // quadruple for seamless loop
+  // quadruple for seamless loop — plenty of buffer so drag never runs out of content
   const items = [...skills, ...skills, ...skills, ...skills];
-  const animName = direction === "right" ? "ticker-right" : "ticker-left";
+  const trackRef = useRef(null);
+  const x = useMotionValue(0);
+  const draggingRef = useRef(false);
+  const hoverPausedRef = useRef(false);
+  const dirSign = direction === "right" ? 1 : -1;
+
+  useEffect(() => {
+    const track = trackRef.current;
+    if (!track) return;
+    const setWidth = () => track.scrollWidth / 4; // width of one repeat of `skills`
+    const pxPerSecond = setWidth() / speed;
+
+    let raf;
+    let last = performance.now();
+
+    const tick = (now) => {
+      const dt = (now - last) / 1000;
+      last = now;
+      if (!draggingRef.current && !hoverPausedRef.current) {
+        const w = setWidth();
+        let next = x.get() + dirSign * pxPerSecond * dt;
+        if (next <= -w) next += w;
+        if (next > 0) next -= w;
+        x.set(next);
+      }
+      raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [direction, speed, skills, x]);
+
+  const handlePointerDown = (e) => {
+    draggingRef.current = true;
+    const track = trackRef.current;
+    track.setPointerCapture(e.pointerId);
+    track.dataset.startX = e.clientX;
+    track.dataset.startVal = x.get();
+    track.style.cursor = "grabbing";
+  };
+  const handlePointerMove = (e) => {
+    if (!draggingRef.current) return;
+    const track = trackRef.current;
+    const startX = parseFloat(track.dataset.startX);
+    const startVal = parseFloat(track.dataset.startVal);
+    const w = track.scrollWidth / 4;
+    let next = startVal + (e.clientX - startX);
+    if (next <= -w) next += w;
+    if (next > 0) next -= w;
+    x.set(next);
+  };
+  const endDrag = (e) => {
+    if (!draggingRef.current) return;
+    draggingRef.current = false;
+    const track = trackRef.current;
+    track.style.cursor = "grab";
+    try { track.releasePointerCapture(e.pointerId); } catch {}
+  };
+
   return (
-    <div style={{ position: "relative", width: "100%", overflow: "hidden", padding: "8px 0" }}>
+    <div
+      style={{ position: "relative", width: "100%", overflow: "hidden", padding: "8px 0" }}
+      onMouseEnter={() => { hoverPausedRef.current = true; }}
+      onMouseLeave={() => { hoverPausedRef.current = false; }}
+    >
       {/* fade edges */}
       <div style={{ position: "absolute", left: 0, top: 0, bottom: 0, width: 80, zIndex: 2, background: "linear-gradient(to right, var(--bg), transparent)", pointerEvents: "none" }} />
       <div style={{ position: "absolute", right: 0, top: 0, bottom: 0, width: 80, zIndex: 2, background: "linear-gradient(to left, var(--bg), transparent)", pointerEvents: "none" }} />
-      <div
+      <motion.div
+        ref={trackRef}
         className="ticker-track"
-        style={{ animation: `${animName} ${speed}s linear infinite` }}
+        style={{ x, cursor: "grab", touchAction: "pan-y", userSelect: "none", WebkitUserSelect: "none" }}
+        onPointerDown={handlePointerDown}
+        onPointerMove={handlePointerMove}
+        onPointerUp={endDrag}
+        onPointerCancel={endDrag}
       >
         {items.map((s, i) => <SkillPill key={i} skill={s} />)}
-      </div>
+      </motion.div>
     </div>
   );
 }
 
-/* ── Linux Section ── */
 function LinuxSection() {
   const ref = useReveal();
   return (
@@ -674,91 +814,6 @@ function LinuxSection() {
   );
 }
  
-
-/* ── Photo Card ── */
-function PhotoCard({ photo, index, onOpen, delay }) {
-  const ref = useReveal();
-  return (
-    <div ref={ref} className="reveal photo-card-wrap" style={{ transitionDelay: `${delay}ms` }}
-      onClick={() => onOpen(index)}
-      role="button" tabIndex={0} aria-label={`Open photo: ${photo.alt}`}
-      onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") onOpen(index); }}
-    >
-      <Card style={{ overflow: "hidden", padding: 0 }}>
-        <div style={{ aspectRatio: "4/3", overflow: "hidden" }}>
-          <img
-            className="photo-img"
-            src={photo.src}
-            alt={photo.alt}
-            loading="lazy"
-            style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
-          />
-        </div>
-        {photo.caption && (
-          <div style={{ padding: "8px 12px" }}>
-            <p style={{ fontSize: 12, fontWeight: 500, color: "var(--text-3)" }}>{photo.caption}</p>
-          </div>
-        )}
-      </Card>
-    </div>
-  );
-}
-
-/* ── Lightbox ── */
-function Lightbox({ photos, index, onClose, onPrev, onNext }) {
-  // keyboard nav + lock body scroll
-  useEffect(() => {
-    const onKey = (e) => {
-      if (e.key === "Escape")     onClose();
-      if (e.key === "ArrowLeft")  onPrev();
-      if (e.key === "ArrowRight") onNext();
-    };
-    document.addEventListener("keydown", onKey);
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.removeEventListener("keydown", onKey);
-      document.body.style.overflow = "";
-    };
-  }, [onClose, onPrev, onNext]);
-
-  const photo = photos[index];
-
-  return (
-    <div className="lb-overlay" onClick={onClose} role="dialog" aria-modal="true" aria-label="Photo lightbox">
-      {/* stop click-through on image area */}
-      <div className="lb-img-wrap" onClick={(e) => e.stopPropagation()}>
-        <img src={photo.src} alt={photo.alt} />
-        {photo.caption && <p className="lb-caption">{photo.caption}</p>}
-      </div>
-
-      {/* close */}
-      <button className="lb-close" onClick={onClose} aria-label="Close lightbox">
-        <i className="fa-solid fa-xmark" aria-hidden="true" />
-      </button>
-
-      {/* prev */}
-      {photos.length > 1 && (
-        <button className="lb-btn prev" onClick={(e) => { e.stopPropagation(); onPrev(); }} aria-label="Previous photo">
-          <i className="fa-solid fa-chevron-left" aria-hidden="true" />
-        </button>
-      )}
-
-      {/* next */}
-      {photos.length > 1 && (
-        <button className="lb-btn next" onClick={(e) => { e.stopPropagation(); onNext(); }} aria-label="Next photo">
-          <i className="fa-solid fa-chevron-right" aria-hidden="true" />
-        </button>
-      )}
-
-      {/* counter */}
-      {photos.length > 1 && (
-        <p className="lb-counter">{index + 1} / {photos.length}</p>
-      )}
-    </div>
-  );
-}
-
-/* ── Blog Card ── */
 function BlogCard({ post, delay }) {
   return (
     <PopCard delay={delay}>
@@ -772,7 +827,7 @@ function BlogCard({ post, delay }) {
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
           <span style={{ fontSize: 11, color: "var(--text-3)", fontWeight: 500 }}>{post.date}</span>
           <span style={{ display: "inline-flex", alignItems: "center", gap: 4, fontSize: 11, color: "var(--text-3)", fontWeight: 500 }}>
-            <i className="fa-solid fa-clock" style={{ fontSize: 10 }} aria-hidden="true" />
+            <i className={`fa-solid fa-${post.status}`} style={{ fontSize: 10 }} aria-hidden="true" />
             {post.readTime}
           </span>
         </div>
@@ -781,7 +836,6 @@ function BlogCard({ post, delay }) {
   );
 }
 
-/* ── Education Card ── */
 function EduCard({ edu, delay }) {
   return (
     <PopCard delay={delay}>
@@ -802,7 +856,6 @@ function EduCard({ edu, delay }) {
   );
 }
 
-/* ── Contact Button ── */
 function ContactBtn({ label, href, icon, bgColor, iconColor }) {
   return (
     <a href={href} target="_blank" rel="noopener noreferrer" className="contact-btn"
@@ -824,7 +877,6 @@ function ContactBtn({ label, href, icon, bgColor, iconColor }) {
   );
 }
 
-/* ── Footer ── */
 function Footer() {
   return (
     <footer style={{
@@ -839,13 +891,8 @@ function Footer() {
   );
 }
 
-/* ── Main Page ── */
 export default function hehe() {
-  const [lbIndex, setLbIndex] = useState(null);
-  const openLb  = (i) => setLbIndex(i);
-  const closeLb = ()  => setLbIndex(null);
-  const prevLb  = ()  => setLbIndex((i) => (i - 1 + PHOTOS.length) % PHOTOS.length);
-  const nextLb  = ()  => setLbIndex((i) => (i + 1) % PHOTOS.length);
+
   return (
     <>
       <FontLoader />
@@ -859,7 +906,15 @@ export default function hehe() {
 
         {/* ABOUT */}
         <AboutSection />
-
+        {/* EDUCATION */}
+        <section id="education" style={{ marginBottom: "3.5rem" }}>
+          <SectionHeader eyebrow="background" title="Education" desc="My academic journey and qualifications." />
+          <div className="edu-grid">
+            {EDUCATION.map((edu, i) => (
+              <EduCard key={`${edu.school}-${i}`} edu={edu} delay={i * 80} />
+            ))}
+          </div>
+        </section>
         {/* PROJECTS */}
         <section id="projects" style={{ marginBottom: "3.5rem" }}>
           <SectionHeader eyebrow="projects" title="Things I've built" />
@@ -880,33 +935,6 @@ export default function hehe() {
         </section>
           <LinuxSection />
  
-        {/* PHOTOS */}
-        {/* <section id="photos" style={{ marginBottom: "3.5rem" }}>
-          <SectionHeader eyebrow="life outside code" title="Photos" />
-          <div className="photos-grid">
-            {PHOTOS.map((photo, i) => (
-              <PhotoCard key={photo.src} photo={photo} index={i} onOpen={openLb} delay={i * 60} />
-            ))}
-          </div>
-        </section>
- 
-        {lbIndex !== null && (
-          <Lightbox photos={PHOTOS} index={lbIndex} onClose={closeLb} onPrev={prevLb} onNext={nextLb} />
-        )} */}
-
-        {/* PHOTOS */}
-        {/* <section id="photos" style={{ marginBottom: "3.5rem" }}>
-          <SectionHeader eyebrow="life outside code" title="Photos" desc="Productiviies and stuff" />
-          <div className="photos-grid">
-            {PHOTOS.map((photo, i) => (
-              <PhotoCard key={photo.src} photo={photo} index={i} onOpen={openLb} delay={i * 60} />
-            ))}
-          </div>
-        </section>
-
-        {lbIndex !== null && (
-          <Lightbox photos={PHOTOS} index={lbIndex} onClose={closeLb} onPrev={prevLb} onNext={nextLb} />
-        )} */}
 
         {/* NOW LEARNING */}
         <section id="blog" style={{ marginBottom: "3.5rem" }}>
@@ -917,15 +945,16 @@ export default function hehe() {
             ))}
           </div>
         </section>
-        {/* EDUCATION */}
-        <section id="education" style={{ marginBottom: "3.5rem" }}>
-          <SectionHeader eyebrow="background" title="Education" desc="My academic journey and qualifications." />
-          <div className="edu-grid">
-            {EDUCATION.map((edu, i) => (
-              <EduCard key={`${edu.school}-${i}`} edu={edu} delay={i * 80} />
+        {/* EXTRA  */}
+       <section id="extra" style={{ marginBottom: "3.5rem" }}>
+          <SectionHeader eyebrow="extra" title="Extra stuff" desc="Some additional things I want to share that i've learned from school." />
+          <div className="blog-grid">
+            {EXTRA.map((post, i) => (
+              <BlogCard key={post.title} post={post} delay={i * 80} />
             ))}
           </div>
         </section>
+        
         {/* CONTACT */}
         <section id="contact" style={{ marginBottom: "3.5rem" }}>
           <SectionHeader eyebrow="say hello" title="Let's build something great" />
@@ -937,6 +966,7 @@ export default function hehe() {
             <ContactBtn href={rawh.facebook} icon="fa-brands fa-facebook"    bgColor="#E6F1FB" iconColor="#1DA1F2" />
           </div>
         </section>
+        
       </main>
       <Footer />
     </>

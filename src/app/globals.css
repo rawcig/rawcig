@@ -72,7 +72,7 @@ body {
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 3px; }
 
-[id] { scroll-margin-top: 88px; }
+[id] { scroll-margin-top: 88px; margin: 164px 0 0 0; }
 
 /* ── Hero entrance keyframes ── */
 @keyframes hero-up {
@@ -122,32 +122,33 @@ body {
 .skill-pill-item { transition: transform .15s ease; cursor: pointer; border-radius:999px; }
 .skill-pill-item:hover { transform: scale(1.06) translateY(-2px); }
 
-/* ticker */
-@keyframes ticker-left  { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-@keyframes ticker-right { from { transform: translateX(-50%); } to { transform: translateX(0); } }
+/* ticker — auto-scroll + drag now handled in JS (see SkillsTicker), this just
+   keeps the track laid out as a single row */
 .ticker-track { display: flex; width: max-content; will-change: transform; }
-.ticker-track:hover { animation-play-state: paused !important; }
 
 /* dock — pill expand */
 .dock-btn {
   overflow: hidden;
-  width: 38px;
-  transition: width .32s cubic-bezier(.34,1.15,.64,1), background .15s ease, color .15s ease;
-}
-.dock-btn:hover, .dock-btn.dock-active {
-  width: auto;
+  display: flex;
+  align-items: center;
+  transition: background .15s ease, color .15s ease;
+  /* no width transition — width:auto can't animate smoothly, so the
+     container just wraps its content and .dock-label does all the work */
 }
 .dock-btn .dock-label {
   overflow: hidden;
   white-space: nowrap;
   max-width: 0;
   opacity: 0;
-  transition: max-width .28s cubic-bezier(.34,1.15,.64,1), opacity .14s ease .1s;
+  transition: max-width .32s cubic-bezier(.34,1.15,.64,1), opacity .16s ease .06s;
+  will-change: max-width;
 }
-.dock-btn:hover .dock-label, .dock-btn.dock-active .dock-label {
-  max-width: 60px;
+.dock-btn:hover .dock-label,
+.dock-btn.dock-active .dock-label {
+  max-width: 110px; /* generous enough for "Projects" / "Learning" */
   opacity: 1;
 }
+.dock-pill { contain: layout style; }
 
 /* photo grid */
 .photo-card-wrap { cursor: zoom-in; }
