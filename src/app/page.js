@@ -1048,7 +1048,7 @@ export default function hehe() {
           <SectionHeader eyebrow="say hello" title="Let's build something great" />
           <div className="contact-grid">
             <ContactBtn href={`mailto:${rawh.email}`} icon="fa-solid fa-envelope" bgColor="var(--footer)" iconColor="var(--text)" />
-            <ContactBtn href={rawh.github} icon="fa-brands fa-github" bgColor="var(--footer)" iconColor="#ffffff" />
+            <ContactBtn href={rawh.github} icon="fa-brands fa-github" bgColor="var(--footer)" iconColor="var(--text)" />
             <ContactBtn href={rawh.linkedin} icon="fa-brands fa-linkedin" bgColor="var(--footer)" iconColor="#0077B5" />
             <ContactBtn href={rawh.telegram} icon="fa-brands fa-telegram" bgColor="var(--footer)" iconColor="#0088CC" />
             <ContactBtn href={rawh.facebook} icon="fa-brands fa-facebook" bgColor="var(--footer)" iconColor="#1DA1F2" />
